@@ -102,7 +102,7 @@ public class ToolPanel {
         for (JButton button : toolButtons) {
             button.setBackground(Color.WHITE);
         }
-        toolButtons.get(toolIndex).setBackground(Color.DARK_GRAY);
+        toolButtons.get(toolIndex).setBackground(new Color(225, 151, 25));
     }
 
     /**
