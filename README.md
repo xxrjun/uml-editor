@@ -111,8 +111,7 @@
 ### Build
 
 ```bash
-mvn compile
-mvn package
+mvn clean package
 ```
 
 ### Run
