@@ -1,5 +1,6 @@
 package com.xxrjun.components;
 
+import com.xxrjun.enums.EditFunctionTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +15,12 @@ public class MenuBar {
     private static MenuBar instance = null;
 
     private static final JMenuBar myMenuBar = new JMenuBar();
+    protected static final JMenuItem changeObjectNameItem = new JMenuItem("Change Object Name");
+    protected static final JMenuItem groupObjectsItem = new JMenuItem("Group Objects");
+    protected static final JMenuItem unGroupObjectsItem = new JMenuItem("UnGroup Objects");
 
     private final Logger logger = LoggerFactory.getLogger(MenuBar.class);
+    private final Canvas canvas = Canvas.getInstance();
 
     private MenuBar() {
         JMenu fileMenu = new JMenu("File");
@@ -23,10 +28,6 @@ public class MenuBar {
         JMenu aboutMenu = new JMenu("About");
 
         JMenuItem aboutItem = new JMenuItem("GitHub");
-        JMenuItem changeObjectNameItem = new JMenuItem("Change Object Name");
-        JMenuItem groupObjectsItem = new JMenuItem("Group Objects");
-        JMenuItem unGroupObjectsItem = new JMenuItem("UnGroup Objects");
-
 
         /*
             Disable menu items by default
@@ -35,7 +36,6 @@ public class MenuBar {
         changeObjectNameItem.setEnabled(false); // only enable when object is selected
         groupObjectsItem.setEnabled(false);     // only enable when multiple objects are selected
         unGroupObjectsItem.setEnabled(false);   // only enable when group is selected
-
 
         /*
             Add action listeners
@@ -47,7 +47,7 @@ public class MenuBar {
         changeObjectNameItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                changeObjectName();
+                canvas.changeObjectName();
             }
         });
         editMenu.add(changeObjectNameItem);
@@ -55,7 +55,7 @@ public class MenuBar {
         groupObjectsItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                groupObjects();
+                canvas.groupSelectedObjects();
             }
         });
         editMenu.add(groupObjectsItem);
@@ -63,7 +63,7 @@ public class MenuBar {
         unGroupObjectsItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                unGroupObjects();
+                canvas.ungroupSelectedObjects();
             }
         });
         editMenu.add(unGroupObjectsItem);
@@ -95,21 +95,19 @@ public class MenuBar {
         }
     }
 
-    private void changeObjectName() {
-        logger.info("Change object name");
-
-        // TODO
-    }
-
-    private void groupObjects() {
-        logger.info("Group objects");
-
-        // TODO
-    }
-
-    private void unGroupObjects() {
-        logger.info("Ungroup objects");
-
-        // TODO
+    public static void setEditFunctionEnable(EditFunctionTypes functionType, boolean enable) {
+        switch (functionType) {
+            case CHANGE_OBJECT_NAME:
+                changeObjectNameItem.setEnabled(enable);
+                break;
+            case GROUP_OBJECTS:
+                groupObjectsItem.setEnabled(enable);
+                break;
+            case UNGROUP_OBJECTS:
+                unGroupObjectsItem.setEnabled(enable);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid function type: " + functionType);
+        }
     }
 }

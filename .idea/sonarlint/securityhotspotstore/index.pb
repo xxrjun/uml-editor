@@ -118,3 +118,7 @@ Osrc/main/java/com/xxrjun/components/uml/connectionlines/GeneralizationLine.java
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
+e
+5src/main/java/com/xxrjun/components/uml/UMLGroup.java,a\6\a693295db509f20cf82a7d3d36ecb1890bc07c56
+d
+4src/main/java/com/xxrjun/components/uml/UMLPort.java,e\e\ee4857d530f753acf4cfb22f1e3dea9f73fd98f9

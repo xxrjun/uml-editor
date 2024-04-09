@@ -1,7 +1,9 @@
 package com.xxrjun.components;
 
-import com.xxrjun.components.uml.Group;
+import com.xxrjun.components.uml.UMLGroup;
+import com.xxrjun.components.uml.basics.UMLBasicObject;
 import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import com.xxrjun.enums.EditFunctionTypes;
 import com.xxrjun.modes.UMLMode;
 import com.xxrjun.components.uml.UMLObject;
 import org.slf4j.Logger;
@@ -13,11 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Canvas extends JPanel {
+
     private static Canvas instance = null;
     private final ArrayList<UMLObject> umlObjects;
     private final ArrayList<UMLObject> selectedObjects;
     private UMLObject selection = null;
-    private Rectangle SelectedArea;
+    private Rectangle selectedArea = null;
     private UMLMode currentMode;
     private UMLConnectionLine tmpConnectionLine = null;
 
@@ -26,12 +29,7 @@ public class Canvas extends JPanel {
     private Canvas() {
         umlObjects = new ArrayList<>();
         selectedObjects = new ArrayList<>();
-        SelectedArea = new Rectangle();
-        //        // ref: https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
-        //        this.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-        //        this.setLayout(null);
-        //        this.setOpaque(true);
-        //        this.setBackground(Color.WHITE);
+        selectedArea = new Rectangle();
     }
 
     public static Canvas getInstance() {
@@ -89,6 +87,10 @@ public class Canvas extends JPanel {
         this.selection = selection;
     }
 
+    /*
+        Temporary connection line
+     */
+
     public void setTmpConnectionLine(UMLConnectionLine tmpConnectionLine) {
         this.tmpConnectionLine = tmpConnectionLine;
     }
@@ -97,26 +99,106 @@ public class Canvas extends JPanel {
         this.tmpConnectionLine = null;
     }
 
+    /*
+        Selected Area
+     */
+    public void setSelectedArea(Rectangle selectedArea) {
+        this.selectedArea = selectedArea;
+    }
+
+    public Rectangle getSelectedArea() {
+        return selectedArea;
+    }
+
+    public void clearSelectedArea() {
+        selectedArea.setBounds(0, 0, 0, 0);
+    }
 
     public void resetSelection() {
-        if (selection instanceof Group group) {
-            group.resetSelection();
+        if (selection instanceof UMLGroup umlGroup) {
+            umlGroup.resetSelection();
             selection = null;
         } else if (selection != null) {
             // Handle the selection reset for other UMLObject types if needed
             selection = null;
         }
-        SelectedArea.setBounds(0, 0, 0, 0);
+        clearSelectedArea();
+        clearSelectedObjects();
     }
 
     public UMLObject getSelection() {
         return selection;
     }
 
+    /*
+        Menu Function
+     */
+
+    public void setEditFunctionEnable() {
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.CHANGE_OBJECT_NAME, selection != null && selection.isNameChangeable());
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.GROUP_OBJECTS, selectedObjects.size() > 1);
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.UNGROUP_OBJECTS, selectedObjects.size() == 1 && selection instanceof UMLGroup);
+    }
+
+    public void changeObjectName() {
+        if (MenuBar.changeObjectNameItem.isEnabled()) {
+            // Show dialog to change object name
+            String name = JOptionPane.showInputDialog("Please enter new object name: ");
+            if (name != null && !name.isEmpty()) {
+                logger.info("Change object name to: {}", name);
+                if (this.getSelection() instanceof UMLBasicObject umlObject) {
+                    umlObject.setObjectName(name);
+                    this.repaint();
+                    logger.info("Object name changed to: {}", umlObject.getObjectName());
+                }
+            } else {
+                logger.warn("Invalid object name: {}", name);
+            }
+        } else {
+            logger.warn("Change object name is disabled");
+        }
+
+    }
+
+    /*
+        Group
+     */
+
+    public void groupSelectedObjects() {
+        if (selectedObjects.size() > 1) { // Group should have at least 2 UMLObjects
+            UMLGroup umlGroup = new UMLGroup();
+            for (UMLObject umlObject : selectedObjects) {
+                umlGroup.addGroupMember(umlObject);
+                umlObjects.remove(umlObject); // Remove the selected objects from the canvas, as they are now part of the group
+            }
+            umlGroup.setGroupBounds();
+            umlObjects.add(umlGroup);
+            selectedObjects.clear();
+            selection = umlGroup;
+        }
+    }
+
+    public void ungroupSelectedObjects() {
+        if (selectedObjects.size() == 1 && selection instanceof UMLGroup umlGroup) {
+            List<UMLObject> groupMembers = umlGroup.getGroupMembers();
+            umlObjects.addAll(groupMembers);
+            umlObjects.remove(umlGroup);
+            selectedObjects.clear();
+            selection = null;
+        }
+        this.repaint();
+    }
+
+    /*
+        Paint
+     */
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
+        // Set menu enable
+        setEditFunctionEnable();
 
         // Set paint color
         g.setColor(Color.BLACK);
@@ -127,11 +209,20 @@ public class Canvas extends JPanel {
         for (int i = umlObjects.size() - 1; i >= 0; i--) {
             UMLObject umlObject = umlObjects.get(i);
             umlObject.draw(g);
+
+            // Reset the group selection
+            umlObject.setGroupSelected(false);
+
+            // Check group selection and highlight
+            if (!selectedArea.isEmpty() && selectedArea.contains(umlObject.getBounds())) {
+                umlObject.highlightSelection(g);
+                umlObject.setGroupSelected(true);
+            }
         }
 
         // Draw the selected objects
         // Performance issue
-        if(this.selection != null) {
+        if (this.selection != null) {
             this.selection.highlightSelection(g);
         }
 
@@ -139,5 +230,14 @@ public class Canvas extends JPanel {
         if (tmpConnectionLine != null) {
             tmpConnectionLine.draw(g);
         }
+
+        // Draw the selected area
+        if (!selectedArea.isEmpty()) {
+            g.setColor(new Color(41, 86, 212, 80));
+            g.fillRect(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+            g.setColor(new Color(8, 37, 57));
+            g.drawRect(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+        }
     }
+
 }

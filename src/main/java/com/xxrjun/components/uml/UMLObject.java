@@ -4,11 +4,12 @@ import com.xxrjun.enums.UMLObjectTypes;
 
 import java.awt.*;
 
-public abstract class UMLObject {
+public abstract class UMLObject{
     private int x1, y1, x2, y2;
     private UMLObjectTypes objectType;
-    protected Port[] ports;
+    protected UMLPort[] umlPorts;
     private boolean isGroupSelected = false;
+    private boolean isNameChangeable = false;
 
     protected UMLObject() {
     }
@@ -31,6 +32,9 @@ public abstract class UMLObject {
     // e.g. When the Object is selected, it will show a different color with ports
     public abstract void highlightSelection(Graphics g);
 
+    // TODO: Percolating up: Only BasicObject and GroupObject will override this method
+    public void updateLocation(int moveX, int moveY) {}
+
     // Setters and Getters
     public int getX1() { return x1; }
 
@@ -50,9 +54,17 @@ public abstract class UMLObject {
 
     public UMLObjectTypes getObjectType() { return objectType; }
 
-    public void setObjectType(UMLObjectTypes objectType) { this.objectType = objectType; }
+    public void     setObjectType(UMLObjectTypes objectType) { this.objectType = objectType; }
 
     public boolean isGroupSelected() { return isGroupSelected; }
 
     public void setGroupSelected(boolean groupSelected) { isGroupSelected = groupSelected; }
+
+    public boolean isNameChangeable() { return isNameChangeable; }
+
+    public void setNameChangeable(boolean nameChangeable) { isNameChangeable = nameChangeable; }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+    }
 }

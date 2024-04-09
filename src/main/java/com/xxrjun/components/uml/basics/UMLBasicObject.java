@@ -1,12 +1,11 @@
 package com.xxrjun.components.uml.basics;
 
-import com.xxrjun.components.uml.Port;
+import com.xxrjun.components.uml.UMLPort;
 import com.xxrjun.components.uml.UMLObject;
 import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
 import com.xxrjun.enums.UMLObjectTypes;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,7 @@ public abstract class UMLBasicObject extends UMLObject {
     private static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14); // Default font, to be used in all objects
 
     private String objectName; // Default name
-    private final Map<PortPosition, Port> ports = new EnumMap<>(PortPosition.class);
+    private final Map<PortPosition, UMLPort> ports = new EnumMap<>(PortPosition.class);
 
     private enum PortPosition {TOP, BOTTOM, LEFT, RIGHT}
 
@@ -24,22 +23,23 @@ public abstract class UMLBasicObject extends UMLObject {
 
     protected UMLBasicObject(int x, int y, int width, int height, String objectName, UMLObjectTypes objectType) {
         super(x, y, x + width, y + height, objectType);
+        super.setNameChangeable(true);
         this.objectName = objectName != null ? objectName : "Object Name";
         initializePorts();
     }
 
     @Override
     public void initializePorts() { // also update the port locations
-        ports.put(PortPosition.TOP, new Port(getCenterX(), getY1() - PORT_OFFSET, PORT_OFFSET));
-        ports.put(PortPosition.BOTTOM, new Port(getCenterX(), getY2() + PORT_OFFSET, PORT_OFFSET));
-        ports.put(PortPosition.LEFT, new Port(getX1() - PORT_OFFSET, getCenterY(), PORT_OFFSET));
-        ports.put(PortPosition.RIGHT, new Port(getX2() + PORT_OFFSET, getCenterY(), PORT_OFFSET));
+        ports.put(PortPosition.TOP, new UMLPort(getCenterX(), getY1() - PORT_OFFSET, PORT_OFFSET));
+        ports.put(PortPosition.BOTTOM, new UMLPort(getCenterX(), getY2() + PORT_OFFSET, PORT_OFFSET));
+        ports.put(PortPosition.LEFT, new UMLPort(getX1() - PORT_OFFSET, getCenterY(), PORT_OFFSET));
+        ports.put(PortPosition.RIGHT, new UMLPort(getX2() + PORT_OFFSET, getCenterY(), PORT_OFFSET));
     }
 
 
     @Override
     public void highlightSelection(Graphics g) {
-        ports.values().forEach(port -> g.fillRect((int) port.getX(), (int) port.getY(), (int) port.getWidth(), (int) port.getHeight()));
+        ports.values().forEach(umlPort -> g.fillRect((int) umlPort.getX(), (int) umlPort.getY(), (int) umlPort.getWidth(), (int) umlPort.getHeight()));
     }
 
     @Override
@@ -48,19 +48,19 @@ public abstract class UMLBasicObject extends UMLObject {
         return p.x >= getX1() && p.x <= getX2() && p.y >= getY1() && p.y <= getY2();
     }
 
-    public Port findNearestPort(Point point) {
-        Port nearestPort = null;
+    public UMLPort findNearestPort(Point point) {
+        UMLPort nearestUMLPort = null;
         double minDistance = Double.MAX_VALUE;
-        for (Map.Entry<PortPosition, Port> entry : ports.entrySet()) {
-            Port port = entry.getValue();
-            double distance = point.distance(port.getCenterX(), port.getCenterY());
+        for (Map.Entry<PortPosition, UMLPort> entry : ports.entrySet()) {
+            UMLPort umlPort = entry.getValue();
+            double distance = point.distance(umlPort.getCenterX(), umlPort.getCenterY());
 
             if (distance < minDistance) {
                 minDistance = distance;
-                nearestPort = port;
+                nearestUMLPort = umlPort;
             }
         }
-        return nearestPort;
+        return nearestUMLPort;
     }
 
     public void updateConnectionLine() {
@@ -82,8 +82,8 @@ public abstract class UMLBasicObject extends UMLObject {
         }
     }
 
-
-    public void moveLocationBy(int deltaX, int deltaY) {
+    @Override
+    public void updateLocation(int deltaX, int deltaY) {
         setX1(getX1() + deltaX);
         setY1(getY1() + deltaY);
         setX2(getX2() + deltaX);

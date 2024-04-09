@@ -1,6 +1,6 @@
 package com.xxrjun.modes;
 
-import com.xxrjun.components.uml.Port;
+import com.xxrjun.components.uml.UMLPort;
 import com.xxrjun.components.uml.UMLObject;
 import com.xxrjun.components.uml.basics.UMLBasicObject;
 import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
@@ -17,8 +17,8 @@ public class CreateUMLConnectionLine extends UMLMode {
     private final UMLObjectTypes lineType;
     private UMLBasicObject sourceObject = null;
     private UMLBasicObject destinationObject = null;
-    private Port sourcNearestPort = null;
-    private Port destinationNearestPort = null;
+    private UMLPort sourcNearestUMLPort = null;
+    private UMLPort destinationNearestUMLPort = null;
 
     public CreateUMLConnectionLine(UMLObjectTypes lineType) {
         this.lineType = lineType;
@@ -30,10 +30,10 @@ public class CreateUMLConnectionLine extends UMLMode {
         allUMLObjects = canvas.getUMLObjects();
         for (UMLObject umlObject : allUMLObjects) {
             // Check if the mouse click is inside the object
-            if (umlObject instanceof UMLBasicObject UMLBasicObject && (UMLBasicObject.contains(e.getPoint()))) {
-                sourceObject = UMLBasicObject;
-                sourcNearestPort = UMLBasicObject.findNearestPort(e.getPoint());
-                startPoint = new Point((int) sourcNearestPort.getX(), (int) sourcNearestPort.getY());
+            if (umlObject instanceof UMLBasicObject umlBasicObject && (umlBasicObject.contains(e.getPoint()))) {
+                sourceObject = umlBasicObject;
+                sourcNearestUMLPort = umlBasicObject.findNearestPort(e.getPoint());
+                startPoint = new Point((int) sourcNearestUMLPort.getX(), (int) sourcNearestUMLPort.getY());
                 break;
             }
         }
@@ -44,10 +44,10 @@ public class CreateUMLConnectionLine extends UMLMode {
         // Find the destination object and set it as the destination of the connection line
         for (UMLObject umlObject : allUMLObjects) {
             // Check if the mouse click is inside the object
-            if (umlObject instanceof UMLBasicObject UMLBasicObject && (UMLBasicObject.contains(e.getPoint()))) {
-                destinationObject = UMLBasicObject;
-                destinationNearestPort = UMLBasicObject.findNearestPort(e.getPoint());
-                endPoint = new Point((int) destinationNearestPort.getX(), (int) destinationNearestPort.getY());
+            if (umlObject instanceof UMLBasicObject umlBasicObject && (umlBasicObject.contains(e.getPoint()))) {
+                destinationObject = umlBasicObject;
+                destinationNearestUMLPort = umlBasicObject.findNearestPort(e.getPoint());
+                endPoint = new Point((int) destinationNearestUMLPort.getX(), (int) destinationNearestUMLPort.getY());
                 break;
             }
         }
@@ -59,8 +59,8 @@ public class CreateUMLConnectionLine extends UMLMode {
 
             // Set port for line
             assert newConnectionLine != null;
-            newConnectionLine.setSourcePort(sourcNearestPort);
-            newConnectionLine.setDestinationPort(destinationNearestPort);
+            newConnectionLine.setSourcePort(sourcNearestUMLPort);
+            newConnectionLine.setDestinationPort(destinationNearestUMLPort);
 
             sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.SOURCE);
             destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.DESTINATION);
@@ -71,8 +71,8 @@ public class CreateUMLConnectionLine extends UMLMode {
         canvas.repaint();
         startPoint = null;
         endPoint = null;
-        sourcNearestPort = null;
-        destinationNearestPort = null;
+        sourcNearestUMLPort = null;
+        destinationNearestUMLPort = null;
     }
 
     @Override
