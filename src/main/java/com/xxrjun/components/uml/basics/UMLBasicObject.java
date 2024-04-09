@@ -10,6 +10,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Uml basic object.
+ */
 public abstract class UMLBasicObject extends UMLObject {
     private static final int PORT_OFFSET = 5; // for the size of the port
     private static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14); // Default font, to be used in all objects
@@ -17,10 +20,36 @@ public abstract class UMLBasicObject extends UMLObject {
     private String objectName; // Default name
     private final Map<PortPosition, UMLPort> ports = new EnumMap<>(PortPosition.class);
 
-    private enum PortPosition {TOP, BOTTOM, LEFT, RIGHT}
+    private enum PortPosition {
+        /**
+         * Top port position.
+         */
+        TOP,
+        /**
+         * Bottom port position.
+         */
+        BOTTOM,
+        /**
+         * Left port position.
+         */
+        LEFT,
+        /**
+         * Right port position.
+         */
+        RIGHT}
 
     private final Map<UMLConnectionLine, UMLConnectionLine.EndPointType> connectionLines = new HashMap<>();
 
+    /**
+     * Instantiates a new Uml basic object.
+     *
+     * @param x          the x
+     * @param y          the y
+     * @param width      the width
+     * @param height     the height
+     * @param objectName the object name
+     * @param objectType the object type
+     */
     protected UMLBasicObject(int x, int y, int width, int height, String objectName, UMLObjectTypes objectType) {
         super(x, y, x + width, y + height, objectType);
         super.setNameChangeable(true);
@@ -48,6 +77,12 @@ public abstract class UMLBasicObject extends UMLObject {
         return p.x >= getX1() && p.x <= getX2() && p.y >= getY1() && p.y <= getY2();
     }
 
+    /**
+     * Find nearest port uml port.
+     *
+     * @param point the point
+     * @return the uml port
+     */
     public UMLPort findNearestPort(Point point) {
         UMLPort nearestUMLPort = null;
         double minDistance = Double.MAX_VALUE;
@@ -63,6 +98,9 @@ public abstract class UMLBasicObject extends UMLObject {
         return nearestUMLPort;
     }
 
+    /**
+     * Update connection line.
+     */
     public void updateConnectionLine() {
         for (Map.Entry<UMLConnectionLine, UMLConnectionLine.EndPointType> entry : connectionLines.entrySet()) {
             // if source => calculate source Nearest port => set source port
@@ -92,18 +130,41 @@ public abstract class UMLBasicObject extends UMLObject {
         updateConnectionLine(); // reset the connection line locations
     }
 
+    /**
+     * Add connection line.
+     *
+     * @param connectionLine the connection line
+     * @param endPointType   the end point type
+     */
     public void addConnectionLine(UMLConnectionLine connectionLine, UMLConnectionLine.EndPointType endPointType) {
         connectionLines.put(connectionLine, endPointType);
     }
 
+    /**
+     * Sets object name.
+     *
+     * @param objectName the object name
+     */
     public void setObjectName(String objectName) {
         this.objectName = objectName;
     }
 
+    /**
+     * Gets object name.
+     *
+     * @return the object name
+     */
     public String getObjectName() {
         return objectName;
     }
 
+    /**
+     * Draw object name.
+     *
+     * @param width      the width
+     * @param textOffset the text offset
+     * @param g          the g
+     */
     public void drawObjectName(int width, int textOffset, Graphics g) {
         g.setFont(DEFAULT_FONT);
         int stringWidth = g.getFontMetrics().stringWidth(getObjectName());

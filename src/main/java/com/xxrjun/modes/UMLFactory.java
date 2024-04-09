@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 
+/**
+ * The type Uml factory.
+ */
 // TODO: Could be improved, but now I don't have time QQ
 // ref: https://java-design-patterns.com/patterns/abstract-factory/#applicability
 public abstract class UMLFactory {
@@ -23,6 +26,13 @@ public abstract class UMLFactory {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Create uml basic object uml basic object.
+     *
+     * @param objectType the object type
+     * @param p          the p
+     * @return the uml basic object
+     */
     public static UMLBasicObject createUMLBasicObject(UMLObjectTypes objectType, Point p) {
         return switch (objectType) {
             case CLASS -> new ClassBasicObject(p.x, p.y, objectType);
@@ -34,6 +44,14 @@ public abstract class UMLFactory {
         };
     }
 
+    /**
+     * Create uml connection line uml connection line.
+     *
+     * @param objectType       the object type
+     * @param sourcePoint      the source point
+     * @param destinationPoint the destination point
+     * @return the uml connection line
+     */
     public static UMLConnectionLine createUMLConnectionLine(UMLObjectTypes objectType, Point sourcePoint, Point destinationPoint) {
         return switch (objectType) {
             case ASSOCIATION_LINE -> new AssociationLine(sourcePoint.x, sourcePoint.y, destinationPoint.x, destinationPoint.y, objectType);

@@ -5,10 +5,18 @@ import com.xxrjun.enums.UMLObjectTypes;
 
 import java.awt.event.MouseEvent;
 
+/**
+ * The type Create basic uml object.
+ */
 public class CreateBasicUMLObject extends UMLMode {
 
     private final UMLObjectTypes objectType;
 
+    /**
+     * Instantiates a new Create basic uml object.
+     *
+     * @param objectType the object type
+     */
     public CreateBasicUMLObject(UMLObjectTypes objectType) {
         this.objectType = objectType;
     }

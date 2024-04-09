@@ -14,6 +14,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Canvas.
+ */
 public class Canvas extends JPanel {
 
     private static Canvas instance = null;
@@ -32,6 +35,11 @@ public class Canvas extends JPanel {
         selectedArea = new Rectangle();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static Canvas getInstance() {
         if (instance == null) {
             instance = new Canvas();
@@ -39,6 +47,11 @@ public class Canvas extends JPanel {
         return instance;
     }
 
+    /**
+     * Sets canvas current action.
+     *
+     * @param action the action
+     */
     public void setCanvasCurrentAction(UMLMode action) {
         if (currentMode != null) {
             // ref: https://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html
@@ -50,39 +63,82 @@ public class Canvas extends JPanel {
         this.addMouseMotionListener(currentMode);
     }
 
+    /**
+     * Add uml object.
+     *
+     * @param umlObject the uml object
+     */
     public void addUMLObject(UMLObject umlObject) {
         umlObjects.add(umlObject);
     }
 
+    /**
+     * Remove uml object.
+     *
+     * @param umlObject the uml object
+     */
     public void removeUMLObject(UMLObject umlObject) {
         umlObjects.remove(umlObject);
     }
 
+    /**
+     * Clear selected objects.
+     */
     public void clearSelectedObjects() {
         selectedObjects.clear();
     }
 
+    /**
+     * Gets uml objects.
+     *
+     * @return the uml objects
+     */
     public List<UMLObject> getUMLObjects() {
         return new ArrayList<>(umlObjects);
     }
 
+    /**
+     * Sets selected objects.
+     *
+     * @param selectedObjects the selected objects
+     */
     public void setSelectedObjects(List<UMLObject> selectedObjects) {
         this.selectedObjects.clear();
         this.selectedObjects.addAll(selectedObjects);
     }
 
+    /**
+     * Add selected object.
+     *
+     * @param umlObject the uml object
+     */
     public void addSelectedObject(UMLObject umlObject) {
         selectedObjects.add(umlObject);
     }
 
+    /**
+     * Remove selected object.
+     *
+     * @param umlObject the uml object
+     */
     public void removeSelectedObject(UMLObject umlObject) {
         selectedObjects.remove(umlObject);
     }
 
+    /**
+     * Gets selected objects.
+     *
+     * @return the selected objects
+     */
     public List<UMLObject> getSelectedObjects() {
         return selectedObjects;
     }
 
+    /**
+     * Sets selection.
+     *
+     * @param selection the selection
+     */
     public void setSelection(UMLObject selection) {
         this.selection = selection;
     }
@@ -91,29 +147,53 @@ public class Canvas extends JPanel {
         Temporary connection line
      */
 
+    /**
+     * Sets tmp connection line.
+     *
+     * @param tmpConnectionLine the tmp connection line
+     */
     public void setTmpConnectionLine(UMLConnectionLine tmpConnectionLine) {
         this.tmpConnectionLine = tmpConnectionLine;
     }
 
+    /**
+     * Clear tmp connection line.
+     */
     public void clearTmpConnectionLine() {
         this.tmpConnectionLine = null;
     }
 
-    /*
+    /**
+     * Sets selected area.
+     *
+     * @param selectedArea the selected area
+     */
+/*
         Selected Area
      */
     public void setSelectedArea(Rectangle selectedArea) {
         this.selectedArea = selectedArea;
     }
 
+    /**
+     * Gets selected area.
+     *
+     * @return the selected area
+     */
     public Rectangle getSelectedArea() {
         return selectedArea;
     }
 
+    /**
+     * Clear selected area.
+     */
     public void clearSelectedArea() {
         selectedArea.setBounds(0, 0, 0, 0);
     }
 
+    /**
+     * Reset selection.
+     */
     public void resetSelection() {
         if (selection instanceof UMLGroup umlGroup) {
             umlGroup.resetSelection();
@@ -126,6 +206,11 @@ public class Canvas extends JPanel {
         clearSelectedObjects();
     }
 
+    /**
+     * Gets selection.
+     *
+     * @return the selection
+     */
     public UMLObject getSelection() {
         return selection;
     }
@@ -134,12 +219,18 @@ public class Canvas extends JPanel {
         Menu Function
      */
 
+    /**
+     * Sets edit function enable.
+     */
     public void setEditFunctionEnable() {
         MenuBar.setEditFunctionEnable(EditFunctionTypes.CHANGE_OBJECT_NAME, selection != null && selection.isNameChangeable());
         MenuBar.setEditFunctionEnable(EditFunctionTypes.GROUP_OBJECTS, selectedObjects.size() > 1);
         MenuBar.setEditFunctionEnable(EditFunctionTypes.UNGROUP_OBJECTS, selectedObjects.size() == 1 && selection instanceof UMLGroup);
     }
 
+    /**
+     * Change object name.
+     */
     public void changeObjectName() {
         if (MenuBar.changeObjectNameItem.isEnabled()) {
             // Show dialog to change object name
@@ -164,6 +255,9 @@ public class Canvas extends JPanel {
         Group
      */
 
+    /**
+     * Group selected objects.
+     */
     public void groupSelectedObjects() {
         if (selectedObjects.size() > 1) { // Group should have at least 2 UMLObjects
             UMLGroup umlGroup = new UMLGroup();
@@ -178,6 +272,9 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * Ungroup selected objects.
+     */
     public void ungroupSelectedObjects() {
         if (selectedObjects.size() == 1 && selection instanceof UMLGroup umlGroup) {
             List<UMLObject> groupMembers = umlGroup.getGroupMembers();

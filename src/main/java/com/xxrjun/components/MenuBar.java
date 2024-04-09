@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * The type Menu bar.
+ */
 public class MenuBar {
 
     // Singleton design pattern
@@ -15,8 +18,17 @@ public class MenuBar {
     private static MenuBar instance = null;
 
     private static final JMenuBar myMenuBar = new JMenuBar();
+    /**
+     * The constant changeObjectNameItem.
+     */
     protected static final JMenuItem changeObjectNameItem = new JMenuItem("Change Object Name");
+    /**
+     * The constant groupObjectsItem.
+     */
     protected static final JMenuItem groupObjectsItem = new JMenuItem("Group Objects");
+    /**
+     * The constant unGroupObjectsItem.
+     */
     protected static final JMenuItem unGroupObjectsItem = new JMenuItem("UnGroup Objects");
 
     private final Logger logger = LoggerFactory.getLogger(MenuBar.class);
@@ -73,6 +85,11 @@ public class MenuBar {
         myMenuBar.add(aboutMenu);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static MenuBar getInstance() {
         if (instance == null) {
             instance = new MenuBar();
@@ -81,6 +98,11 @@ public class MenuBar {
         return instance;
     }
 
+    /**
+     * Gets menu bar.
+     *
+     * @return the menu bar
+     */
     public JMenuBar getMenuBar() {
         return myMenuBar;
     }
@@ -95,6 +117,12 @@ public class MenuBar {
         }
     }
 
+    /**
+     * Sets edit function enable.
+     *
+     * @param functionType the function type
+     * @param enable       the enable
+     */
     public static void setEditFunctionEnable(EditFunctionTypes functionType, boolean enable) {
         switch (functionType) {
             case CHANGE_OBJECT_NAME:

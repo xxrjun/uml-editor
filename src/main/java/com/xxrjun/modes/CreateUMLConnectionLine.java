@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * The type Create uml connection line.
+ */
 public class CreateUMLConnectionLine extends UMLMode {
     private List<UMLObject> allUMLObjects;
     private Point startPoint = null;
@@ -20,6 +23,11 @@ public class CreateUMLConnectionLine extends UMLMode {
     private UMLPort sourcNearestUMLPort = null;
     private UMLPort destinationNearestUMLPort = null;
 
+    /**
+     * Instantiates a new Create uml connection line.
+     *
+     * @param lineType the line type
+     */
     public CreateUMLConnectionLine(UMLObjectTypes lineType) {
         this.lineType = lineType;
     }

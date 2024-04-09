@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * The type Select.
+ */
 public class Select extends UMLMode {
     private static final int GROUP_BOUND_OFFSET = 10;
     // TODO: could be improved? Other modes might have this field as well

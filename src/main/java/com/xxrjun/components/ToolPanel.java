@@ -11,6 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * The type Tool panel.
+ */
 public class ToolPanel {
     private static ToolPanel instance = null;
 
@@ -18,9 +21,21 @@ public class ToolPanel {
     private final ArrayList<JButton> toolButtons;
     private final Logger logger = LoggerFactory.getLogger(ToolPanel.class);
 
+    /**
+     * The constant TOOL_PANEL_WIDTH.
+     */
     protected static final int TOOL_PANEL_WIDTH = 200;
+    /**
+     * The constant TOOL_PANEL_HEIGHT.
+     */
     protected static final int TOOL_PANEL_HEIGHT = 768;
+    /**
+     * The constant TOOL_PANEL_PADDING.
+     */
     protected static final int TOOL_PANEL_PADDING = 10;
+    /**
+     * The constant TOOL_BUTTON_VERTICAL_PADDING.
+     */
     protected static final int TOOL_BUTTON_VERTICAL_PADDING = 10;
 
     private ToolPanel() {
@@ -38,6 +53,11 @@ public class ToolPanel {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ToolPanel getInstance() {
         if (instance == null) {
             instance = new ToolPanel();
@@ -45,6 +65,9 @@ public class ToolPanel {
         return instance;
     }
 
+    /**
+     * Initialize panel.
+     */
     public void initializePanel() {
         panel.setBounds(0, 0, TOOL_PANEL_WIDTH, TOOL_PANEL_HEIGHT);
         panel.setBorder(BorderFactory.createEmptyBorder(TOOL_PANEL_PADDING, TOOL_PANEL_PADDING, TOOL_PANEL_PADDING, TOOL_PANEL_PADDING));
@@ -53,6 +76,9 @@ public class ToolPanel {
         logger.info("Tool panel initialized: width={}, height={}", TOOL_PANEL_WIDTH, TOOL_PANEL_HEIGHT);
     }
 
+    /**
+     * Load buttons.
+     */
     public void loadButtons() {
         for (ToolButtonConfig config : ToolButtonConfig.values()) {
             URL imageUrl = getClass().getResource("/images/" + config.getImageName());
@@ -67,6 +93,11 @@ public class ToolPanel {
         logger.info("Tool buttons loaded: {}", toolButtons.size());
     }
 
+    /**
+     * Reset panel buttons.
+     *
+     * @param toolIndex the tool index
+     */
     public void resetPanelButtons(int toolIndex) {
         for (JButton button : toolButtons) {
             button.setBackground(Color.WHITE);
@@ -74,14 +105,29 @@ public class ToolPanel {
         toolButtons.get(toolIndex).setBackground(Color.DARK_GRAY);
     }
 
+    /**
+     * Gets total panel height.
+     *
+     * @return the total panel height
+     */
     public int getTotalPanelHeight() {
         return TOOL_PANEL_HEIGHT + toolButtons.size() * TOOL_BUTTON_VERTICAL_PADDING;
     }
 
+    /**
+     * Gets tool panel width.
+     *
+     * @return the tool panel width
+     */
     public int getToolPanelWidth() {
         return TOOL_PANEL_WIDTH + 2 * TOOL_PANEL_PADDING;
     }
 
+    /**
+     * Gets panel.
+     *
+     * @return the panel
+     */
     public JPanel getPanel() {
         return panel;
     }
@@ -90,6 +136,13 @@ public class ToolPanel {
         // ref: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#jbutton
         private final JButton button;
 
+        /**
+         * Instantiates a new Tool button.
+         *
+         * @param action   the action
+         * @param toolName the tool name
+         * @param imageUrl the image url
+         */
         public ToolButton(UMLMode action, String toolName, URL imageUrl) {
             ImageIcon icon = new ImageIcon(imageUrl);
             this.button = new JButton(icon);

@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Uml editor application.
+ */
 public class UMLEditorApplication {
     // Window Configurations
     private static final String WINDOW_TITLE = "UML Editor";
@@ -21,11 +24,11 @@ public class UMLEditorApplication {
 
 
     /**
+     * Create and show gui.
+     *
      * @param title  The title of the window
      * @param width  The width of the window
-     * @param height The height of the window
-     *               <p>
-     *               ref: <a href="https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/MenuLookDemoProject/src/components/MenuLookDemo.java">...</a>
+     * @param height The height of the window               <p>               ref: <a href="https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/MenuLookDemoProject/src/components/MenuLookDemo.java">...</a>
      */
     public void createAndShowGUI(String title, int width, int height) {
         logger.info("Creating and showing GUI: title={}, width={}, height={}", title, width, height);
@@ -54,6 +57,11 @@ public class UMLEditorApplication {
         frame.add(canvasInst, BorderLayout.CENTER);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         // Because swing components are not thread safe, they must be created and modified on the event-dispatching thread (EDT).
         // ref: https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/package-summary.html#threading

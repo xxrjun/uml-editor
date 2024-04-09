@@ -4,6 +4,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Uml group.
+ */
 public class UMLGroup extends UMLObject {
     private static final int GROUP_BOUND_OFFSET = 10;
 
@@ -11,6 +14,9 @@ public class UMLGroup extends UMLObject {
     private Rectangle groupBounds;
     private UMLObject selection = null;
 
+    /**
+     * Instantiates a new Uml group.
+     */
     public UMLGroup() {
         super();
         groupMembers = new ArrayList<>();
@@ -51,15 +57,28 @@ public class UMLGroup extends UMLObject {
         }
     }
 
+    /**
+     * Add group member.
+     *
+     * @param umlObject the uml object
+     */
     public void addGroupMember(UMLObject umlObject) {
         groupMembers.add(umlObject);
         setGroupBounds();
     }
 
+    /**
+     * Gets group members.
+     *
+     * @return the group members
+     */
     public List<UMLObject> getGroupMembers() {
         return new ArrayList<>(groupMembers);
     }
 
+    /**
+     * Sets group bounds.
+     */
     public void setGroupBounds() {
         int x = Integer.MAX_VALUE;
         int y = Integer.MAX_VALUE;
@@ -96,10 +115,18 @@ public class UMLGroup extends UMLObject {
         this.setY2(this.getY1() + groupBounds.height);
     }
 
+    /**
+     * Reset selection.
+     */
     public void resetSelection() {
         selection = null;
     }
 
+    /**
+     * Gets selection.
+     *
+     * @return the selection
+     */
     public UMLObject getSelection() {
         return selection;
     }
