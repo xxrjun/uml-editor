@@ -155,6 +155,8 @@ public class ToolPanel {
                 public void mousePressed(java.awt.event.MouseEvent evt) {
                     ToolPanel.getInstance().resetPanelButtons(toolButtons.indexOf(button));
                     Canvas.getInstance().setCanvasCurrentAction(action);
+                    Canvas.getInstance().resetSelection();
+                    Canvas.getInstance().repaint();
                 }
             });
         }
