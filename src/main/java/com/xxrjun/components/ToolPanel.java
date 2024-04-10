@@ -150,6 +150,8 @@ public class ToolPanel {
             this.button.setFocusable(false);
             this.button.setBackground(Color.WHITE);
             this.button.setBorderPainted(false);
+            button.setOpaque(true);
+            button.setContentAreaFilled(true);
             this.button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent evt) {
