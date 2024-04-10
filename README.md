@@ -10,7 +10,7 @@
   <p align="center">
      NCU OOAD | Spring 2024 | Final Project
     <br />
-    <a href="."><strong>JavaDocs »</strong></a>
+    <a href="https://xxrjun.github.io/uml-editor/"><strong>JavaDocs »</strong></a>
     <br />
     <a href="."><strong>DEMO »</strong></a>
     <br />
