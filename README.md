@@ -1,4 +1,5 @@
-
+[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://xxrjun.github.io/uml-editor)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xxrjun/uml-editor)](https://github.com/xxrjun/uml-editor/releases/tag/v1.0)
 <br />
 <div align="center">
   <a href="https://github.com/xxrjun/uml-editor">
@@ -9,6 +10,8 @@
   <p align="center">
      NCU OOAD | Spring 2024 | Final Project
     <br />
+    <a href="."><strong>JavaDocs »</strong></a>
+    <br />
     <a href="."><strong>DEMO »</strong></a>
     <br />
     <br />
@@ -16,29 +19,26 @@
   </p>
 </div>
 
+
 # UML Editor
 
-- [Demo](#demo)
 - [Software Requirements](#software-requirements)
   - [Maven Dependencies](#maven-dependencies)
 - [Features](#features)
-  - [GUI Layout \& Buttons](#gui-layout--buttons)
+  - [GUI Layout and Buttons](#gui-layout-and-buttons)
   - [Functions](#functions)
   - [Extra Features](#extra-features)
 - [Program Flow Overview](#program-flow-overview)
 - [Future Work](#future-work)
-- [Project Structure](#project-structure)
 - [Usage](#usage)
   - [Build](#build)
   - [Run](#run)
+- [Project File Structure](#project-file-structure)
 - [Class Diagram](#class-diagram)
 - [References](#references)
   - [Documentations](#documentations)
   - [Related Projects](#related-projects)
 
-## Demo
-
-> TODO
 
 ## Software Requirements
 
@@ -48,14 +48,18 @@
 - [SonarLint Plugin](https://plugins.jetbrains.com/plugin/7973-sonarlint) - Code quality and security analysis tool
 - [Maven](https://mvnrepository.com/) - Dependency Management
 - [Figma](https://www.figma.com/) - UI and components design
+- Documentation
+  - [Generate JavaDoc](https://www.jetbrains.com/help/idea/javadocs.html#generate-javadoc)  - IntelliJ IDEA Tool
+  - [Deploy - Publish Javadoc](https://github.com/marketplace/actions/deploy-publish-javadoc) - GitHub Action
 
 ### Maven Dependencies
 
 - Logger: [slf4j](http://www.slf4j.org/) with [logback](http://logback.qos.ch/)
 
+
 ## Features
 
-### GUI Layout & Buttons
+### GUI Layout and Buttons
 
 - [x] Select
 - [x] Association
