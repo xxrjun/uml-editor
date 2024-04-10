@@ -270,6 +270,8 @@ public class Canvas extends JPanel {
             selectedObjects.clear();
             selection = umlGroup;
         }
+        this.repaint();
+        setEditFunctionEnable();
     }
 
     /**
@@ -284,6 +286,7 @@ public class Canvas extends JPanel {
             selection = null;
         }
         this.repaint();
+        setEditFunctionEnable();
     }
 
     /*
