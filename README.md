@@ -1,5 +1,10 @@
 [![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://xxrjun.github.io/uml-editor)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/xxrjun/uml-editor)](https://github.com/xxrjun/uml-editor/releases/tag/v1.0)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xxrjun_uml-editor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=xxrjun_uml-editor)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=xxrjun_uml-editor&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=xxrjun_uml-editor)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=xxrjun_uml-editor&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=xxrjun_uml-editor)
+
 <br />
 <div align="center">
   <a href="https://github.com/xxrjun/uml-editor">
@@ -121,7 +126,7 @@ mvn clean package
 
 ```bash
 java -jar target/uml-editor-1.0-jar-with-dependencies.jar
-```
+``` 
 
 ## Project File Structure
     
