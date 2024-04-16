@@ -5,6 +5,7 @@ import com.xxrjun.components.uml.UMLObject;
 import com.xxrjun.components.uml.basics.UMLBasicObject;
 import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
 import com.xxrjun.enums.UMLObjectTypes;
+import com.xxrjun.factories.UMLObjectFactory;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -62,7 +63,7 @@ public class CreateUMLConnectionLine extends UMLMode {
 
         if (endPoint != null && startPoint != null) {
             // Create the connection line
-            UMLConnectionLine newConnectionLine = UMLFactory.createUMLConnectionLine(lineType, startPoint, endPoint);
+            UMLConnectionLine newConnectionLine = UMLObjectFactory.createUMLConnectionLine(lineType, startPoint, endPoint);
             canvas.addUMLObject(newConnectionLine);
 
             // Set port for line
@@ -87,7 +88,7 @@ public class CreateUMLConnectionLine extends UMLMode {
     public void mouseDragged(MouseEvent e) {
         // Display temporary dragged line
         if (startPoint != null) {
-            UMLConnectionLine tmpConnectionLine = UMLFactory.createUMLConnectionLine(lineType, startPoint, e.getPoint());
+            UMLConnectionLine tmpConnectionLine = UMLObjectFactory.createUMLConnectionLine(lineType, startPoint, e.getPoint());
             canvas.setTmpConnectionLine(tmpConnectionLine);
             canvas.repaint();
         }

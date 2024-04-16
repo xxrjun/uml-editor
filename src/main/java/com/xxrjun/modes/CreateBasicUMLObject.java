@@ -2,6 +2,7 @@ package com.xxrjun.modes;
 
 import com.xxrjun.components.uml.basics.UMLBasicObject;
 import com.xxrjun.enums.UMLObjectTypes;
+import com.xxrjun.factories.UMLObjectFactory;
 
 import java.awt.event.MouseEvent;
 
@@ -23,7 +24,7 @@ public class CreateBasicUMLObject extends UMLMode {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        UMLBasicObject newUMLBasicObject = UMLFactory.createUMLBasicObject(objectType, e.getPoint());
+        UMLBasicObject newUMLBasicObject = UMLObjectFactory.createUMLBasicObject(objectType, e.getPoint());
         canvas.addUMLObject(newUMLBasicObject);
         canvas.repaint();
     }

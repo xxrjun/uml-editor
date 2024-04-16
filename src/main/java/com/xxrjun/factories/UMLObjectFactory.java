@@ -1,4 +1,4 @@
-package com.xxrjun.modes;
+package com.xxrjun.factories;
 
 import com.xxrjun.components.uml.basics.UMLBasicObject;
 import com.xxrjun.components.uml.basics.ClassBasicObject;
@@ -18,11 +18,11 @@ import java.awt.*;
  */
 // TODO: Could be improved, but now I don't have time QQ
 // ref: https://java-design-patterns.com/patterns/abstract-factory/#applicability
-public abstract class UMLFactory {
+public abstract class UMLObjectFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(UMLFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(UMLObjectFactory.class);
 
-    private UMLFactory() {
+    private UMLObjectFactory() {
         throw new IllegalStateException("Utility class");
     }
 
