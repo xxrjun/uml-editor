@@ -4,4 +4,5 @@ com.xxrjun.components.uml
 com.xxrjun.components.uml.basics
 com.xxrjun.components.uml.connectionlines
 com.xxrjun.enums
+com.xxrjun.factories
 com.xxrjun.modes
