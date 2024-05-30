@@ -1,0 +1,2279 @@
+.
+├── ./assets
+├── ./docs
+├── ./src
+│   └── ./src/main
+│       ├── ./src/main/java
+│       │   └── ./src/main/java/com
+│       │       └── ./src/main/java/com/xxrjun
+│       │           ├── ./src/main/java/com/xxrjun/UMLEditorApplication.java
+│       │           ├── ./src/main/java/com/xxrjun/components
+│       │           │   ├── ./src/main/java/com/xxrjun/components/Canvas.java
+│       │           │   ├── ./src/main/java/com/xxrjun/components/MenuBar.java
+│       │           │   ├── ./src/main/java/com/xxrjun/components/ToolPanel.java
+│       │           │   └── ./src/main/java/com/xxrjun/components/uml
+│       │           │       ├── ./src/main/java/com/xxrjun/components/uml/UMLGroup.java
+│       │           │       ├── ./src/main/java/com/xxrjun/components/uml/UMLObject.java
+│       │           │       ├── ./src/main/java/com/xxrjun/components/uml/UMLPort.java
+│       │           │       ├── ./src/main/java/com/xxrjun/components/uml/basics
+│       │           │       │   ├── ./src/main/java/com/xxrjun/components/uml/basics/ClassBasicObject.java
+│       │           │       │   ├── ./src/main/java/com/xxrjun/components/uml/basics/UMLBasicObject.java
+│       │           │       │   └── ./src/main/java/com/xxrjun/components/uml/basics/UseCaseBasicObject.java
+│       │           │       └── ./src/main/java/com/xxrjun/components/uml/connectionlines
+│       │           │           ├── ./src/main/java/com/xxrjun/components/uml/connectionlines/AssociationLine.java
+│       │           │           ├── ./src/main/java/com/xxrjun/components/uml/connectionlines/CompositionLine.java
+│       │           │           ├── ./src/main/java/com/xxrjun/components/uml/connectionlines/GeneralizationLine.java
+│       │           │           └── ./src/main/java/com/xxrjun/components/uml/connectionlines/UMLConnectionLine.java
+│       │           ├── ./src/main/java/com/xxrjun/enums
+│       │           │   ├── ./src/main/java/com/xxrjun/enums/EditFunctionTypes.java
+│       │           │   ├── ./src/main/java/com/xxrjun/enums/ToolButtonConfig.java
+│       │           │   └── ./src/main/java/com/xxrjun/enums/UMLObjectTypes.java
+│       │           └── ./src/main/java/com/xxrjun/modes
+│       │               ├── ./src/main/java/com/xxrjun/modes/CreateBasicUMLObject.java
+│       │               ├── ./src/main/java/com/xxrjun/modes/CreateUMLConnectionLine.java
+│       │               ├── ./src/main/java/com/xxrjun/modes/Select.java
+│       │               ├── ./src/main/java/com/xxrjun/modes/UMLFactory.java
+│       │               ├── ./src/main/java/com/xxrjun/modes/UMLFactoryInterface.java
+│       │               └── ./src/main/java/com/xxrjun/modes/UMLMode.java
+│       └── ./src/main/resources
+│           └── ./src/main/resources/images
+└── ./target
+    ├── ./target/classes
+    │   ├── ./target/classes/com
+    │   │   └── ./target/classes/com/xxrjun
+    │   │       ├── ./target/classes/com/xxrjun/components
+    │   │       │   └── ./target/classes/com/xxrjun/components/uml
+    │   │       │       ├── ./target/classes/com/xxrjun/components/uml/basics
+    │   │       │       └── ./target/classes/com/xxrjun/components/uml/connectionlines
+    │   │       ├── ./target/classes/com/xxrjun/enums
+    │   │       └── ./target/classes/com/xxrjun/modes
+    │   └── ./target/classes/images
+    ├── ./target/generated-sources
+    │   └── ./target/generated-sources/annotations
+    └── ./target/test-classes
+
+30 directories, 23 files
+File: ./src/main/java/com/xxrjun/UMLEditorApplication.java
+------------------------
+package com.xxrjun;
+
+import com.xxrjun.components.Canvas;
+import com.xxrjun.components.MenuBar;
+import com.xxrjun.components.ToolPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * The type Uml editor application.
+ */
+public class UMLEditorApplication {
+    // Window Configurations
+    private static final String WINDOW_TITLE = "UML Editor";
+    private static final int WINDOW_WIDTH = 1280;
+    private static final int WINDOW_HEIGHT = ToolPanel.getInstance().getTotalPanelHeight();
+
+    private static final JFrame frame = new JFrame();
+
+    private final Logger logger = LoggerFactory.getLogger(UMLEditorApplication.class);
+
+
+    /**
+     * Create and show gui.
+     *
+     * @param title  The title of the window
+     * @param width  The width of the window
+     * @param height The height of the window               <p>               ref: <a href="https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/MenuLookDemoProject/src/components/MenuLookDemo.java">...</a>
+     */
+    public void createAndShowGUI(String title, int width, int height) {
+        logger.info("Creating and showing GUI: title={}, width={}, height={}", title, width, height);
+        /*
+            Create and set up the window
+         */
+        frame.setTitle(title);
+        frame.setSize(width, height);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        /*
+            Create and set up the content pane
+         */
+        // Add the MenuBar to the frame
+        MenuBar menuBarInst = MenuBar.getInstance();
+        frame.setJMenuBar(menuBarInst.getMenuBar());
+
+        // Add the ToolPanel to the frame
+        ToolPanel toolPanelInst = ToolPanel.getInstance();
+        frame.add(toolPanelInst.getPanel(), BorderLayout.WEST);
+
+        // Add the Canvas to the frame
+        Canvas canvasInst = Canvas.getInstance();
+        frame.add(canvasInst, BorderLayout.CENTER);
+    }
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        // Because swing components are not thread safe, they must be created and modified on the event-dispatching thread (EDT).
+        // ref: https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/package-summary.html#threading
+        // Schedule a job for the event-dispatching thread: creating and showing this application's GUI.
+        SwingUtilities.invokeLater(() -> {
+            UMLEditorApplication editor = new UMLEditorApplication();
+            editor.createAndShowGUI(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
+        });
+
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/modes/Select.java
+------------------------
+package com.xxrjun.modes;
+
+import com.xxrjun.components.uml.UMLGroup;
+import com.xxrjun.components.uml.UMLObject;
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
+/**
+ * The type Select.
+ */
+public class Select extends UMLMode {
+    private static final int GROUP_BOUND_OFFSET = 10;
+    // TODO: could be improved? Other modes might have this field as well
+    private List<UMLObject> allUMLObjects; // should be same as canvas.getUMLObjects()
+    private Point startPoint = null;
+    private UMLConnectionLine selectedConnectionLine = null;
+
+    private final Logger logger = LoggerFactory.getLogger(Select.class);
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        startPoint = e.getPoint();
+        allUMLObjects = canvas.getUMLObjects();
+
+        canvas.resetSelection();
+
+        logger.info("Trying to selecting object at point: {}", startPoint);
+
+        int size = allUMLObjects.size();
+        for (int i = size - 1; i >= 0; i--) {
+            UMLObject umlObject = allUMLObjects.get(i);
+            if (umlObject.contains(e.getPoint())) {
+                logger.info("Selected object: {}", umlObject);
+                canvas.setSelection(umlObject);
+                canvas.addSelectedObject(umlObject);
+                break;
+            }
+        }
+
+        canvas.repaint();
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int moveX = e.getX() - startPoint.x;
+        int moveY = e.getY() - startPoint.y;
+
+        if (canvas.getSelection() != null) {
+            if (canvas.getSelection() instanceof UMLBasicObject umlBasicObject) {
+                // UMLObject selected
+                umlBasicObject.updateLocation(moveX, moveY);
+                startPoint.x = e.getX();
+                startPoint.y = e.getY();
+            } else if (canvas.getSelection() instanceof UMLGroup umlGroup) {
+                // UMLGroup selected
+                umlGroup.updateLocation(moveX, moveY);
+                startPoint.x = e.getX();
+                startPoint.y = e.getY();
+            }
+        } else {
+            // Update selected area
+            int upperLeftX = Math.min(startPoint.x, e.getX());
+            int upperLeftY = Math.min(startPoint.y, e.getY());
+            int width = Math.abs(this.startPoint.x - e.getX());
+            int height = Math.abs(this.startPoint.y - e.getY());
+            canvas.setSelectedArea(new Rectangle(upperLeftX, upperLeftY, width, height));
+        }
+
+        canvas.repaint();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (!canvas.getSelectedArea().isEmpty()) {
+            // Check if any object is inside the selected area
+            Rectangle selectedArea = canvas.getSelectedArea();
+            for (UMLObject umlObject : allUMLObjects) {
+                if (selectedArea.contains(umlObject.getBounds())) {
+                    // Add object to selected objects
+                    canvas.addSelectedObject(umlObject);
+                }
+            }
+
+            if (canvas.getSelectedObjects().isEmpty()) {
+                // Select but no object inside
+                canvas.clearSelectedArea();
+            } else {
+                // resize selected area
+                int upperLeftX = Integer.MAX_VALUE;
+                int upperLeftY = Integer.MAX_VALUE;
+                int width = 0;
+                int height = 0;
+
+                List<UMLObject> selectedObjects = canvas.getSelectedObjects();
+                for (UMLObject umlObject : selectedObjects) {
+                    upperLeftX = Math.min(upperLeftX, umlObject.getBounds().x);
+                    upperLeftY = Math.min(upperLeftY, umlObject.getBounds().y);
+                    width = Math.max(width, umlObject.getBounds().x + umlObject.getBounds().width);
+                    height = Math.max(height, umlObject.getBounds().y + umlObject.getBounds().height);
+                }
+
+
+                canvas.getSelectedArea().setBounds(upperLeftX - GROUP_BOUND_OFFSET, upperLeftY - GROUP_BOUND_OFFSET, width - upperLeftX + 2 * GROUP_BOUND_OFFSET, height - upperLeftY + 2 * GROUP_BOUND_OFFSET);
+            }
+        } else {
+            // No selected area
+            canvas.clearSelectedArea();
+        }
+        logger.info("Number of selected objects: {}", canvas.getSelectedObjects().size());
+
+        canvas.repaint();
+
+    }
+}------------------------
+
+File: ./src/main/java/com/xxrjun/modes/UMLMode.java
+------------------------
+package com.xxrjun.modes;
+
+import java.awt.event.MouseAdapter;
+import com.xxrjun.components.Canvas;
+
+/**
+ * The type Uml mode.
+ */
+public abstract class UMLMode extends MouseAdapter {
+    /**
+     * The Canvas.
+     */
+    protected Canvas canvas = Canvas.getInstance();
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/modes/CreateBasicUMLObject.java
+------------------------
+package com.xxrjun.modes;
+
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.event.MouseEvent;
+
+/**
+ * The type Create basic uml object.
+ */
+public class CreateBasicUMLObject extends UMLMode {
+
+    private final UMLObjectTypes objectType;
+
+    /**
+     * Instantiates a new Create basic uml object.
+     *
+     * @param objectType the object type
+     */
+    public CreateBasicUMLObject(UMLObjectTypes objectType) {
+        this.objectType = objectType;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        UMLBasicObject newUMLBasicObject = UMLFactory.createUMLBasicObject(objectType, e.getPoint());
+        canvas.addUMLObject(newUMLBasicObject);
+        canvas.repaint();
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/modes/CreateUMLConnectionLine.java
+------------------------
+package com.xxrjun.modes;
+
+import com.xxrjun.components.uml.UMLPort;
+import com.xxrjun.components.uml.UMLObject;
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
+/**
+ * The type Create uml connection line.
+ */
+public class CreateUMLConnectionLine extends UMLMode {
+    private List<UMLObject> allUMLObjects;
+    private Point startPoint = null;
+    private Point endPoint = null;
+    private final UMLObjectTypes lineType;
+    private UMLBasicObject sourceObject = null;
+    private UMLBasicObject destinationObject = null;
+    private UMLPort sourcNearestUMLPort = null;
+    private UMLPort destinationNearestUMLPort = null;
+
+    /**
+     * Instantiates a new Create uml connection line.
+     *
+     * @param lineType the line type
+     */
+    public CreateUMLConnectionLine(UMLObjectTypes lineType) {
+        this.lineType = lineType;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Find the source object and set it as the source of the connection line
+        allUMLObjects = canvas.getUMLObjects();
+        for (UMLObject umlObject : allUMLObjects) {
+            // Check if the mouse click is inside the object
+            if (umlObject instanceof UMLBasicObject umlBasicObject && (umlBasicObject.contains(e.getPoint()))) {
+                sourceObject = umlBasicObject;
+                sourcNearestUMLPort = umlBasicObject.findNearestPort(e.getPoint());
+                startPoint = new Point((int) sourcNearestUMLPort.getX(), (int) sourcNearestUMLPort.getY());
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Find the destination object and set it as the destination of the connection line
+        for (UMLObject umlObject : allUMLObjects) {
+            // Check if the mouse click is inside the object
+            if (umlObject instanceof UMLBasicObject umlBasicObject && (umlBasicObject.contains(e.getPoint()))) {
+                destinationObject = umlBasicObject;
+                destinationNearestUMLPort = umlBasicObject.findNearestPort(e.getPoint());
+                endPoint = new Point((int) destinationNearestUMLPort.getX(), (int) destinationNearestUMLPort.getY());
+                break;
+            }
+        }
+
+        if (endPoint != null && startPoint != null) {
+            // Create the connection line
+            UMLConnectionLine newConnectionLine = UMLFactory.createUMLConnectionLine(lineType, startPoint, endPoint);
+            canvas.addUMLObject(newConnectionLine);
+
+            // Set port for line
+            assert newConnectionLine != null;
+            newConnectionLine.setSourcePort(sourcNearestUMLPort);
+            newConnectionLine.setDestinationPort(destinationNearestUMLPort);
+
+            sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.SOURCE);
+            destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.DESTINATION);
+        }
+
+        // clear temporary connection line and repaint
+        canvas.clearTmpConnectionLine();
+        canvas.repaint();
+        startPoint = null;
+        endPoint = null;
+        sourcNearestUMLPort = null;
+        destinationNearestUMLPort = null;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // Display temporary dragged line
+        if (startPoint != null) {
+            UMLConnectionLine tmpConnectionLine = UMLFactory.createUMLConnectionLine(lineType, startPoint, e.getPoint());
+            canvas.setTmpConnectionLine(tmpConnectionLine);
+            canvas.repaint();
+        }
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/modes/UMLFactoryInterface.java
+------------------------
+package com.xxrjun.modes;
+
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+
+/**
+ * The interface Uml factory interface.
+ */
+public interface UMLFactoryInterface {
+    /**
+     * Create uml object uml basic object.
+     *
+     * @return the uml basic object
+     */
+    UMLBasicObject createUMLObject();
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/modes/UMLFactory.java
+------------------------
+package com.xxrjun.modes;
+
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+import com.xxrjun.components.uml.basics.ClassBasicObject;
+import com.xxrjun.components.uml.basics.UseCaseBasicObject;
+import com.xxrjun.components.uml.connectionlines.AssociationLine;
+import com.xxrjun.components.uml.connectionlines.CompositionLine;
+import com.xxrjun.components.uml.connectionlines.GeneralizationLine;
+import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import com.xxrjun.enums.UMLObjectTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+
+/**
+ * The type Uml factory.
+ */
+// TODO: Could be improved, but now I don't have time QQ
+// ref: https://java-design-patterns.com/patterns/abstract-factory/#applicability
+public abstract class UMLFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(UMLFactory.class);
+
+    private UMLFactory() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    /**
+     * Create uml basic object uml basic object.
+     *
+     * @param objectType the object type
+     * @param p          the p
+     * @return the uml basic object
+     */
+    public static UMLBasicObject createUMLBasicObject(UMLObjectTypes objectType, Point p) {
+        return switch (objectType) {
+            case CLASS -> new ClassBasicObject(p.x, p.y, objectType);
+            case USE_CASE -> new UseCaseBasicObject(p.x, p.y, objectType);
+            default -> {
+                logger.error("Creating basic UML object failed: Invalid UML object type: {}", objectType);
+                yield null;
+            }
+        };
+    }
+
+    /**
+     * Create uml connection line uml connection line.
+     *
+     * @param objectType       the object type
+     * @param sourcePoint      the source point
+     * @param destinationPoint the destination point
+     * @return the uml connection line
+     */
+    public static UMLConnectionLine createUMLConnectionLine(UMLObjectTypes objectType, Point sourcePoint, Point destinationPoint) {
+        return switch (objectType) {
+            case ASSOCIATION_LINE -> new AssociationLine(sourcePoint.x, sourcePoint.y, destinationPoint.x, destinationPoint.y, objectType);
+            case GENERALIZATION_LINE -> new GeneralizationLine(sourcePoint.x, sourcePoint.y, destinationPoint.x, destinationPoint.y, objectType);
+            case COMPOSITION_LINE -> new CompositionLine(sourcePoint.x, sourcePoint.y, destinationPoint.x, destinationPoint.y, objectType);
+            default -> {
+                logger.error("Creating UML connection line failed: Invalid UML object type: {}", objectType);
+                yield null;
+            }
+        };
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/enums/EditFunctionTypes.java
+------------------------
+package com.xxrjun.enums;
+
+/**
+ * The enum Edit function types.
+ */
+public enum EditFunctionTypes {
+    /**
+     * Change object name edit function types.
+     */
+    CHANGE_OBJECT_NAME,
+    /**
+     * Group objects edit function types.
+     */
+    GROUP_OBJECTS,
+    /**
+     * Ungroup objects edit function types.
+     */
+    UNGROUP_OBJECTS
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/enums/ToolButtonConfig.java
+------------------------
+package com.xxrjun.enums;
+
+
+import com.xxrjun.modes.CreateBasicUMLObject;
+import com.xxrjun.modes.CreateUMLConnectionLine;
+import com.xxrjun.modes.Select;
+import com.xxrjun.modes.UMLMode;
+
+/**
+ * The enum Tool button config.
+ */
+public enum ToolButtonConfig {
+    /**
+     * The Select.
+     */
+    SELECT(new Select(), "Select", "select.png"),
+    /**
+     * The Association.
+     */
+    ASSOCIATION(new CreateUMLConnectionLine(UMLObjectTypes.ASSOCIATION_LINE), "Association", "association-line.png"),
+    /**
+     * The Generalization.
+     */
+    GENERALIZATION(new CreateUMLConnectionLine(UMLObjectTypes.GENERALIZATION_LINE), "Generalization", "generalization-line.png"),
+    /**
+     * The Composition.
+     */
+    COMPOSITION(new CreateUMLConnectionLine(UMLObjectTypes.COMPOSITION_LINE), "Composition", "composition-line.png"),
+    /**
+     * The Class.
+     */
+    CLASS(new CreateBasicUMLObject(UMLObjectTypes.CLASS), "Class", "class.png"),
+    /**
+     * The Use case.
+     */
+    USE_CASE(new CreateBasicUMLObject(UMLObjectTypes.USE_CASE), "Use Case", "use-case.png");
+
+    private final UMLMode actionType;
+    private final String toolName;
+    private final String imageName;
+
+    ToolButtonConfig(UMLMode actionType, String toolName, String imageName) {
+        this.actionType = actionType;
+        this.toolName = toolName;
+        this.imageName = imageName;
+    }
+
+    /**
+     * Gets action type.
+     *
+     * @return the action type
+     */
+    public UMLMode getActionType() {
+        return actionType;
+    }
+
+    /**
+     * Gets tool name.
+     *
+     * @return the tool name
+     */
+    public String getToolName() {
+        return toolName;
+    }
+
+    /**
+     * Gets image name.
+     *
+     * @return the image name
+     */
+    public String getImageName() {
+        return imageName;
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/enums/UMLObjectTypes.java
+------------------------
+package com.xxrjun.enums;
+
+/**
+ * The enum Uml object types.
+ */
+public enum UMLObjectTypes {
+    /**
+     * Class uml object types.
+     */
+    CLASS,
+    /**
+     * Group uml object types.
+     */
+    GROUP,
+    /**
+     * Use case uml object types.
+     */
+    USE_CASE,
+    /**
+     * Association line uml object types.
+     */
+    ASSOCIATION_LINE,
+    /**
+     * Composition line uml object types.
+     */
+    COMPOSITION_LINE,
+    /**
+     * Generalization line uml object types.
+     */
+    GENERALIZATION_LINE,
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/basics/ClassBasicObject.java
+------------------------
+package com.xxrjun.components.uml.basics;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Class basic object.
+ */
+public class ClassBasicObject extends UMLBasicObject {
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 120;
+    private static final int TITLE_HEIGHT = HEIGHT / 3;
+    private static final int TEXT_OFFSET = 25;
+
+    /**
+     * Instantiates a new Class basic object.
+     *
+     * @param x          the x
+     * @param y          the y
+     * @param objectType the object type
+     */
+    public ClassBasicObject(int x, int y, UMLObjectTypes objectType) {
+        super(x, y, WIDTH, HEIGHT, "Class Name", objectType);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        drawClassRectangle(g);
+        drawTitleSeparator(g);
+        drawAttributeSeparator(g);
+        drawObjectName(WIDTH, TEXT_OFFSET, g);
+    }
+
+    private void drawClassRectangle(Graphics g) {
+        g.drawRect(getX1(), getY1(), WIDTH, HEIGHT);
+    }
+
+    private void drawTitleSeparator(Graphics g) {
+        g.drawLine(getX1(), getY1() + TITLE_HEIGHT, getX2(), getY1() + TITLE_HEIGHT);
+    }
+
+    private void drawAttributeSeparator(Graphics g) {
+        g.drawLine(getX1(), getY1() + TITLE_HEIGHT * 2, getX2(), getY1() + TITLE_HEIGHT * 2);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/basics/UseCaseBasicObject.java
+------------------------
+package com.xxrjun.components.uml.basics;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Use case basic object.
+ */
+public class UseCaseBasicObject extends UMLBasicObject {
+    private static final int WIDTH = 110;
+    private static final int HEIGHT = 96;
+    private static final int TEXT_OFFSET = HEIGHT / 2 + 5; // To center the text
+
+    /**
+     * Instantiates a new Use case basic object.
+     *
+     * @param x          the x
+     * @param y          the y
+     * @param objectType the object type
+     */
+    public UseCaseBasicObject(int x, int y, UMLObjectTypes objectType) {
+        super(x, y, WIDTH, HEIGHT, "Use Case Name", objectType);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        drawUseCaseEllipse(g);
+        drawObjectName(WIDTH, TEXT_OFFSET, g);
+    }
+
+    private void drawUseCaseEllipse(Graphics g) {
+        g.drawOval(getX1(), getY1(), WIDTH, HEIGHT);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/basics/UMLBasicObject.java
+------------------------
+package com.xxrjun.components.uml.basics;
+
+import com.xxrjun.components.uml.UMLPort;
+import com.xxrjun.components.uml.UMLObject;
+import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * The type Uml basic object.
+ */
+public abstract class UMLBasicObject extends UMLObject {
+    private static final int PORT_OFFSET = 5; // for the size of the port
+    private static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14); // Default font, to be used in all objects
+
+    private String objectName; // Default name
+    private final Map<PortPosition, UMLPort> ports = new EnumMap<>(PortPosition.class);
+
+    private enum PortPosition {
+        /**
+         * Top port position.
+         */
+        TOP,
+        /**
+         * Bottom port position.
+         */
+        BOTTOM,
+        /**
+         * Left port position.
+         */
+        LEFT,
+        /**
+         * Right port position.
+         */
+        RIGHT}
+
+    private final Map<UMLConnectionLine, UMLConnectionLine.EndPointType> connectionLines = new HashMap<>();
+
+    /**
+     * Instantiates a new Uml basic object.
+     *
+     * @param x          the x
+     * @param y          the y
+     * @param width      the width
+     * @param height     the height
+     * @param objectName the object name
+     * @param objectType the object type
+     */
+    protected UMLBasicObject(int x, int y, int width, int height, String objectName, UMLObjectTypes objectType) {
+        super(x, y, x + width, y + height, objectType);
+        super.setNameChangeable(true);
+        this.objectName = objectName != null ? objectName : "Object Name";
+        initializePorts();
+    }
+
+    @Override
+    public void initializePorts() { // also update the port locations
+        ports.put(PortPosition.TOP, new UMLPort(getCenterX(), getY1() - PORT_OFFSET, PORT_OFFSET));
+        ports.put(PortPosition.BOTTOM, new UMLPort(getCenterX(), getY2() + PORT_OFFSET, PORT_OFFSET));
+        ports.put(PortPosition.LEFT, new UMLPort(getX1() - PORT_OFFSET, getCenterY(), PORT_OFFSET));
+        ports.put(PortPosition.RIGHT, new UMLPort(getX2() + PORT_OFFSET, getCenterY(), PORT_OFFSET));
+    }
+
+
+    @Override
+    public void highlightSelection(Graphics g) {
+        ports.values().forEach(umlPort -> g.fillRect((int) umlPort.getX(), (int) umlPort.getY(), (int) umlPort.getWidth(), (int) umlPort.getHeight()));
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        // TODO: This method is not accurate for UseCase
+        return p.x >= getX1() && p.x <= getX2() && p.y >= getY1() && p.y <= getY2();
+    }
+
+    /**
+     * Find nearest port uml port.
+     *
+     * @param point the point
+     * @return the uml port
+     */
+    public UMLPort findNearestPort(Point point) {
+        UMLPort nearestUMLPort = null;
+        double minDistance = Double.MAX_VALUE;
+        for (Map.Entry<PortPosition, UMLPort> entry : ports.entrySet()) {
+            UMLPort umlPort = entry.getValue();
+            double distance = point.distance(umlPort.getCenterX(), umlPort.getCenterY());
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestUMLPort = umlPort;
+            }
+        }
+        return nearestUMLPort;
+    }
+
+    /**
+     * Update connection line.
+     */
+    public void updateConnectionLine() {
+        for (Map.Entry<UMLConnectionLine, UMLConnectionLine.EndPointType> entry : connectionLines.entrySet()) {
+            // if source => calculate source Nearest port => set source port
+            // if destination => calculate destination Nearest port => set destination port
+            UMLConnectionLine connectionLine = entry.getKey();
+            UMLConnectionLine.EndPointType endPointType = entry.getValue();
+
+
+            // TODO: BUG: UMLBasicObject and UMLConnectionLine overlapping still exists after updating to nearest port
+            if (endPointType == UMLConnectionLine.EndPointType.SOURCE) {
+                connectionLine.setSourcePort(findNearestPort(new Point(connectionLine.getX1(), connectionLine.getY1())));
+            } else if (endPointType == UMLConnectionLine.EndPointType.DESTINATION) {
+                connectionLine.setDestinationPort(findNearestPort(new Point(connectionLine.getX2(), connectionLine.getY2())));
+            }
+            // reset the location of the connection line
+            connectionLine.resetLocation();
+        }
+    }
+
+    @Override
+    public void updateLocation(int deltaX, int deltaY) {
+        setX1(getX1() + deltaX);
+        setY1(getY1() + deltaY);
+        setX2(getX2() + deltaX);
+        setY2(getY2() + deltaY);
+        initializePorts(); // reset the port locations
+        updateConnectionLine(); // reset the connection line locations
+    }
+
+    /**
+     * Add connection line.
+     *
+     * @param connectionLine the connection line
+     * @param endPointType   the end point type
+     */
+    public void addConnectionLine(UMLConnectionLine connectionLine, UMLConnectionLine.EndPointType endPointType) {
+        connectionLines.put(connectionLine, endPointType);
+    }
+
+    /**
+     * Sets object name.
+     *
+     * @param objectName the object name
+     */
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
+    }
+
+    /**
+     * Gets object name.
+     *
+     * @return the object name
+     */
+    public String getObjectName() {
+        return objectName;
+    }
+
+    /**
+     * Draw object name.
+     *
+     * @param width      the width
+     * @param textOffset the text offset
+     * @param g          the g
+     */
+    public void drawObjectName(int width, int textOffset, Graphics g) {
+        g.setFont(DEFAULT_FONT);
+        int stringWidth = g.getFontMetrics().stringWidth(getObjectName());
+        int textStartX = getX1() + (width - stringWidth) / 2;
+        g.drawString(getObjectName(), textStartX, getY1() + textOffset);
+    }
+
+    private int getCenterX() {
+        return (getX1() + getX2()) / 2;
+    }
+
+    private int getCenterY() {
+        return (getY1() + getY2()) / 2;
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/UMLPort.java
+------------------------
+package com.xxrjun.components.uml;
+
+import java.awt.*;
+
+/**
+ * The type Uml port.
+ */
+public class UMLPort extends Rectangle {
+    /**
+     * Instantiates a new Uml port.
+     *
+     * @param centerX the center x
+     * @param centerY the center y
+     * @param offset  the offset
+     */
+    public UMLPort(int centerX, int centerY, int offset){
+        super(centerX - offset, centerY - offset, offset * 2, offset * 2);
+    }
+
+    /**
+     * Set location.
+     *
+     * @param centerX the center x
+     * @param centerY the center y
+     * @param offset  the offset
+     */
+    public void setLocation(int centerX, int centerY, int offset){
+        setBounds(centerX - offset, centerY - offset, offset * 2, offset * 2);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/connectionlines/UMLConnectionLine.java
+------------------------
+package com.xxrjun.components.uml.connectionlines;
+
+import com.xxrjun.components.uml.UMLPort;
+import com.xxrjun.components.uml.UMLObject;
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+
+/**
+ * The type Uml connection line.
+ */
+public abstract class UMLConnectionLine extends UMLObject {
+    // source and destination Port of the line, which is paired
+    private final UMLPort[] endpointUMLPorts;
+
+    /**
+     * The enum End point type.
+     */
+    public enum EndPointType {
+        /**
+         * Source end point type.
+         */
+        SOURCE,
+        /**
+         * Destination end point type.
+         */
+        DESTINATION,
+        /**
+         * None end point type.
+         */
+        NONE
+    }
+
+    private EndPointType currentEndPointType = EndPointType.NONE;
+
+    /**
+     * Instantiates a new Uml connection line.
+     *
+     * @param x1          the x 1
+     * @param y1          the y 1
+     * @param x2          the x 2
+     * @param y2          the y 2
+     * @param objectTypes the object types
+     */
+    protected UMLConnectionLine(int x1, int y1, int x2, int y2, UMLObjectTypes objectTypes) {
+        super(x1, y1, x2, y2, objectTypes);
+        this.endpointUMLPorts = new UMLPort[2];
+    }
+
+
+    @Override
+    public void initializePorts() {
+
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        return isNearLine(p);
+    }
+
+    @Override
+    public void highlightSelection(Graphics g) {
+        g.setColor(Color.red);
+        this.draw(g);
+    }
+
+    /**
+     * Reset location.
+     */
+    public void resetLocation() {
+        this.setX1((int) endpointUMLPorts[0].getCenterX());
+        this.setY1((int) endpointUMLPorts[0].getCenterY());
+        this.setX2((int) endpointUMLPorts[1].getCenterX());
+        this.setY2((int) endpointUMLPorts[1].getCenterY());
+    }
+
+    /**
+     * Reset end point.
+     *
+     * @param p the p
+     */
+    public void resetEndPoint(Point p) {
+        if (currentEndPointType == EndPointType.SOURCE) {
+            this.setX1(p.x);
+            this.setY1(p.y);
+        } else if (currentEndPointType == EndPointType.DESTINATION) {
+            this.setX2(p.x);
+            this.setY2(p.y);
+        }
+    }
+
+    /**
+     * Sets source port.
+     *
+     * @param umlPort the uml port
+     */
+    public void setSourcePort(UMLPort umlPort) {
+        this.endpointUMLPorts[0] = umlPort;
+    }
+
+    /**
+     * Sets destination port.
+     *
+     * @param umlPort the uml port
+     */
+    public void setDestinationPort(UMLPort umlPort) {
+        this.endpointUMLPorts[1] = umlPort;
+    }
+
+    /**
+     * Gets current end point type.
+     *
+     * @return the current end point type
+     */
+    public EndPointType getCurrentEndPointType() {
+        return currentEndPointType;
+    }
+
+    /**
+     * Sets end point type.
+     *
+     * @param endPointType the end point type
+     */
+    public void setEndPointType(EndPointType endPointType) {
+        currentEndPointType = endPointType;
+    }
+
+
+    private boolean isNearLine(Point p) {
+        final int tolerance = 5;
+        Line2D line = new Line2D.Double(this.getX1(), this.getY1(), this.getX2(), this.getY2());
+        return line.ptSegDist(p) < tolerance;
+    }
+
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/connectionlines/CompositionLine.java
+------------------------
+package com.xxrjun.components.uml.connectionlines;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Composition line.
+ */
+public class CompositionLine extends UMLConnectionLine {
+    /**
+     * Instantiates a new Composition line.
+     *
+     * @param x1         the x 1
+     * @param y1         the y 1
+     * @param x2         the x 2
+     * @param y2         the y 2
+     * @param objectType the object type
+     */
+    public CompositionLine(int x1, int y1, int x2, int y2, UMLObjectTypes objectType) {
+        super(x1, y1, x2, y2, objectType);
+    }
+
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        int sourceX = this.getX1();
+        int sourceY = this.getY1();
+        int destX = this.getX2();
+        int destY = this.getY2();
+
+        int dx = destX - sourceX;
+        int dy = destY - sourceY;
+
+        double distance = Math.sqrt((double) dx * dx + dy * dy);
+
+        double arrowLeftX = distance - 16;
+        double arrowRightX = arrowLeftX;
+        double arrowLeftY = 8;
+        double arrowRightY = -8;
+        double x;
+
+        double sin = dy / distance;
+        double cos = dx / distance;
+
+        x = arrowLeftX * cos - arrowLeftY * sin + sourceX;
+        arrowLeftY = arrowLeftX * sin + arrowLeftY * cos + sourceY;
+        arrowLeftX = x;
+
+        x = arrowRightX * cos - arrowRightY * sin + sourceX;
+        arrowRightY = arrowRightX * sin + arrowRightY * cos + sourceY;
+        arrowRightX = x;
+
+        double arrowBackX = arrowLeftX + (arrowRightX - destX);
+        double arrowBackY = arrowLeftY + (arrowRightY - destY);
+
+        int[] xPoints = {destX, (int) arrowLeftX, (int) arrowBackX, (int) arrowRightX};
+        int[] yPoints = {destY, (int) arrowLeftY, (int) arrowBackY, (int) arrowRightY};
+
+
+        graphics2D.setStroke(new BasicStroke(2));
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.drawLine(sourceX, sourceY, (int) arrowBackX, (int) arrowBackY);
+        graphics2D.drawPolygon(xPoints, yPoints, 4);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/connectionlines/GeneralizationLine.java
+------------------------
+package com.xxrjun.components.uml.connectionlines;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Generalization line.
+ */
+public class GeneralizationLine extends UMLConnectionLine {
+    /**
+     * Instantiates a new Generalization line.
+     *
+     * @param x1         the x 1
+     * @param y1         the y 1
+     * @param x2         the x 2
+     * @param y2         the y 2
+     * @param objectType the object type
+     */
+    public GeneralizationLine(int x1, int y1, int x2, int y2, UMLObjectTypes objectType) {
+        super(x1, y1, x2, y2, objectType);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        int sourceX = this.getX1();
+        int sourceY = this.getY1();
+        int destX = this.getX2();
+        int destY = this.getY2();
+
+        int dx = destX - sourceX;
+        int dy = destY - sourceY;
+
+        double distance = Math.sqrt((double) dx * dx + dy * dy);
+
+        double arrowLeftX = distance - 16;
+        double arrowRightX = arrowLeftX;
+        double arrowLeftY = 8;
+        double arrowRightY = -8;
+        double x;
+
+        double sin = dy / distance;
+        double cos = dx / distance;
+
+        x = arrowLeftX * cos - arrowLeftY * sin + sourceX;
+        arrowLeftY = arrowLeftX * sin + arrowLeftY * cos + sourceY;
+        arrowLeftX = x;
+
+        x = arrowRightX * cos - arrowRightY * sin + sourceX;
+        arrowRightY = arrowRightX * sin + arrowRightY * cos + sourceY;
+        arrowRightX = x;
+
+        int[] xPoints = {destX, (int) arrowLeftX, (int) arrowRightX};
+        int[] yPoints = {destY, (int) arrowLeftY, (int) arrowRightY};
+
+        graphics2D.setStroke(new BasicStroke(2));
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.drawLine(sourceX, sourceY, (int) (arrowRightX + arrowLeftX) / 2, (int) (arrowRightY + arrowLeftY) / 2);
+        graphics2D.drawPolygon(xPoints, yPoints, 3);
+
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/connectionlines/AssociationLine.java
+------------------------
+package com.xxrjun.components.uml.connectionlines;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Association line.
+ */
+public class AssociationLine extends UMLConnectionLine {
+    /**
+     * Instantiates a new Association line.
+     *
+     * @param x1         the x 1
+     * @param y1         the y 1
+     * @param x2         the x 2
+     * @param y2         the y 2
+     * @param objectType the object type
+     */
+    public AssociationLine(int x1, int y1, int x2, int y2, UMLObjectTypes objectType) {
+        super(x1, y1, x2, y2, objectType);
+    }
+
+    // ref: https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        int sourceX = this.getX1();
+        int sourceY = this.getY1();
+        int destX = this.getX2();
+        int destY = this.getY2();
+
+        int dx = destX - sourceX;
+        int dy = destY - sourceY;
+
+        double distance = Math.sqrt((double) dx * dx + dy * dy);
+
+        double arrowLeftX = distance - 12;
+        double arrowRightX = arrowLeftX;
+        double arrowLeftY = 12;
+        double arrowRightY = -12;
+        double x;
+
+        double sin = dy / distance;
+        double cos = dx / distance;
+
+        x = arrowLeftX * cos - arrowLeftY * sin + sourceX;
+        arrowLeftY = arrowLeftX * sin + arrowLeftY * cos + sourceY;
+        arrowLeftX = x;
+
+        x = arrowRightX * cos - arrowRightY * sin + sourceX;
+        arrowRightY = arrowRightX * sin + arrowRightY * cos + sourceY;
+        arrowRightX = x;
+
+        graphics2D.drawLine(sourceX, sourceY, destX, destY);
+        graphics2D.drawLine(destX, destY, (int) arrowLeftX, (int) arrowLeftY);
+        graphics2D.drawLine(destX, destY, (int) arrowRightX, (int) arrowRightY);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/UMLGroup.java
+------------------------
+package com.xxrjun.components.uml;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The type Uml group.
+ */
+public class UMLGroup extends UMLObject {
+    private static final int GROUP_BOUND_OFFSET = 10;
+
+    private List<UMLObject> groupMembers;
+    private Rectangle groupBounds;
+    private UMLObject selection = null;
+
+    /**
+     * Instantiates a new Uml group.
+     */
+    public UMLGroup() {
+        super();
+        groupMembers = new ArrayList<>();
+        groupBounds = new Rectangle();
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        for (UMLObject umlObject : groupMembers) {
+            umlObject.draw(g);
+        }
+        // draw group bounds
+        g.setColor(new Color(8, 37, 57, 80));
+        g.drawRect(groupBounds.x, groupBounds.y, groupBounds.width, groupBounds.height);
+        g.setColor(Color.BLACK);
+    }
+
+    @Override
+    public void initializePorts() {
+        // PASS
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        return groupBounds.contains(p);
+    }
+
+    @Override
+    public void highlightSelection(Graphics g) {
+        g.setColor(new Color(41, 86, 212, 80));
+        g.fillRect(groupBounds.x, groupBounds.y, groupBounds.width, groupBounds.height);
+        g.setColor(new Color(8, 37, 57));
+        g.drawRect(groupBounds.x , groupBounds.y, groupBounds.width, groupBounds.height);
+        // reset color
+        g.setColor(Color.BLACK);
+        if (selection != null) {
+            selection.highlightSelection(g);
+        }
+    }
+
+    /**
+     * Add group member.
+     *
+     * @param umlObject the uml object
+     */
+    public void addGroupMember(UMLObject umlObject) {
+        groupMembers.add(umlObject);
+        setGroupBounds();
+    }
+
+    /**
+     * Gets group members.
+     *
+     * @return the group members
+     */
+    public List<UMLObject> getGroupMembers() {
+        return new ArrayList<>(groupMembers);
+    }
+
+    /**
+     * Sets group bounds.
+     */
+    public void setGroupBounds() {
+        int x = Integer.MAX_VALUE;
+        int y = Integer.MAX_VALUE;
+        int width = 0;
+        int height = 0;
+        for (UMLObject umlObject : groupMembers) {
+            Rectangle bounds = umlObject.getBounds();
+            x = Math.min(x, bounds.x);
+            y = Math.min(y, bounds.y);
+            width = Math.max(width, bounds.x + bounds.width);
+            height = Math.max(height, bounds.y + bounds.height);
+        }
+        groupBounds = new Rectangle(x - GROUP_BOUND_OFFSET, y - GROUP_BOUND_OFFSET, width - x + 2 * GROUP_BOUND_OFFSET, height - y + 2 * GROUP_BOUND_OFFSET);
+        this.setX1(x - GROUP_BOUND_OFFSET);
+        this.setY1(y - GROUP_BOUND_OFFSET);
+        this.setX2(width + GROUP_BOUND_OFFSET);
+        this.setY2(height + GROUP_BOUND_OFFSET);
+    }
+
+
+    @Override
+    public void updateLocation(int moveX, int moveY) {
+        for (UMLObject umlObject : groupMembers) {
+            umlObject.updateLocation(moveX, moveY);
+        }
+        updateGroupBounds(moveX, moveY);
+    }
+
+    private void updateGroupBounds(int moveX, int moveY) {
+        groupBounds.setLocation(groupBounds.x + moveX, groupBounds.y + moveY);
+        this.setX1(this.getX1() + moveX);
+        this.setY1(this.getY1() + moveY);
+        this.setX2(this.getX1() + groupBounds.width);
+        this.setY2(this.getY1() + groupBounds.height);
+    }
+
+    /**
+     * Reset selection.
+     */
+    public void resetSelection() {
+        selection = null;
+    }
+
+    /**
+     * Gets selection.
+     *
+     * @return the selection
+     */
+    public UMLObject getSelection() {
+        return selection;
+    }
+
+
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/uml/UMLObject.java
+------------------------
+package com.xxrjun.components.uml;
+
+import com.xxrjun.enums.UMLObjectTypes;
+
+import java.awt.*;
+
+/**
+ * The type Uml object.
+ */
+public abstract class UMLObject{
+    private int x1, y1, x2, y2;
+    private UMLObjectTypes objectType;
+    /**
+     * The Uml ports.
+     */
+    protected UMLPort[] umlPorts;
+    private boolean isGroupSelected = false;
+    private boolean isNameChangeable = false;
+
+    /**
+     * Instantiates a new Uml object.
+     */
+    protected UMLObject() {
+    }
+
+    /**
+     * Instantiates a new Uml object.
+     *
+     * @param x1         the x 1
+     * @param y1         the y 1
+     * @param x2         the x 2
+     * @param y2         the y 2
+     * @param objectType the object type
+     */
+    protected UMLObject(int x1, int y1, int x2, int y2, UMLObjectTypes objectType) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.objectType = objectType;
+    }
+
+    /**
+     * Draw.
+     *
+     * @param g the g
+     */
+    public abstract void draw(Graphics g);
+
+    /**
+     * Initialize ports.
+     */
+    public abstract void initializePorts();
+
+    /**
+     * Contains boolean.
+     *
+     * @param p the p
+     * @return the boolean
+     */
+    public abstract boolean contains(Point p);
+
+    /**
+     * Highlight selection.
+     *
+     * @param g the g
+     */
+    // Method to highlight the selection of the shape.
+    // e.g. When the Object is selected, it will show a different color with ports
+    public abstract void highlightSelection(Graphics g);
+
+    /**
+     * Update location.
+     *
+     * @param moveX the move x
+     * @param moveY the move y
+     */
+    // TODO: Percolating up: Only BasicObject and GroupObject will override this method
+    public void updateLocation(int moveX, int moveY) {}
+
+    /**
+     * Gets x 1.
+     *
+     * @return the x 1
+     */
+    // Setters and Getters
+    public int getX1() { return x1; }
+
+    /**
+     * Sets x 1.
+     *
+     * @param x1 the x 1
+     */
+    public void setX1(int x1) { this.x1 = x1; }
+
+    /**
+     * Gets y 1.
+     *
+     * @return the y 1
+     */
+    public int getY1() { return y1; }
+
+    /**
+     * Sets y 1.
+     *
+     * @param y1 the y 1
+     */
+    public void setY1(int y1) { this.y1 = y1; }
+
+    /**
+     * Gets x 2.
+     *
+     * @return the x 2
+     */
+    public int getX2() { return x2; }
+
+    /**
+     * Sets x 2.
+     *
+     * @param x2 the x 2
+     */
+    public void setX2(int x2) { this.x2 = x2; }
+
+    /**
+     * Gets y 2.
+     *
+     * @return the y 2
+     */
+    public int getY2() { return y2; }
+
+    /**
+     * Sets y 2.
+     *
+     * @param y2 the y 2
+     */
+    public void setY2(int y2) { this.y2 = y2; }
+
+    /**
+     * Gets object type.
+     *
+     * @return the object type
+     */
+    public UMLObjectTypes getObjectType() { return objectType; }
+
+    /**
+     * Sets object type.
+     *
+     * @param objectType the object type
+     */
+    public void     setObjectType(UMLObjectTypes objectType) { this.objectType = objectType; }
+
+    /**
+     * Is group selected boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isGroupSelected() { return isGroupSelected; }
+
+    /**
+     * Sets group selected.
+     *
+     * @param groupSelected the group selected
+     */
+    public void setGroupSelected(boolean groupSelected) { isGroupSelected = groupSelected; }
+
+    /**
+     * Is name changeable boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isNameChangeable() { return isNameChangeable; }
+
+    /**
+     * Sets name changeable.
+     *
+     * @param nameChangeable the name changeable
+     */
+    public void setNameChangeable(boolean nameChangeable) { isNameChangeable = nameChangeable; }
+
+    /**
+     * Gets bounds.
+     *
+     * @return the bounds
+     */
+    public Rectangle getBounds() {
+        return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/MenuBar.java
+------------------------
+package com.xxrjun.components;
+
+import com.xxrjun.enums.EditFunctionTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+/**
+ * The type Menu bar.
+ */
+public class MenuBar {
+
+    // Singleton design pattern
+    // ref: https://www.baeldung.com/java-singleton
+    private static MenuBar instance = null;
+
+    private static final JMenuBar myMenuBar = new JMenuBar();
+    /**
+     * The constant changeObjectNameItem.
+     */
+    protected static final JMenuItem changeObjectNameItem = new JMenuItem("Change Object Name");
+    /**
+     * The constant groupObjectsItem.
+     */
+    protected static final JMenuItem groupObjectsItem = new JMenuItem("Group Objects");
+    /**
+     * The constant unGroupObjectsItem.
+     */
+    protected static final JMenuItem unGroupObjectsItem = new JMenuItem("UnGroup Objects");
+
+    private final Logger logger = LoggerFactory.getLogger(MenuBar.class);
+    private final Canvas canvas = Canvas.getInstance();
+
+    private MenuBar() {
+        JMenu fileMenu = new JMenu("File");
+        JMenu editMenu = new JMenu("Edit");
+        JMenu aboutMenu = new JMenu("About");
+
+        JMenuItem aboutItem = new JMenuItem("GitHub");
+
+        /*
+            Disable menu items by default
+         */
+        aboutItem.setEnabled(true);
+        changeObjectNameItem.setEnabled(false); // only enable when object is selected
+        groupObjectsItem.setEnabled(false);     // only enable when multiple objects are selected
+        unGroupObjectsItem.setEnabled(false);   // only enable when group is selected
+
+        /*
+            Add action listeners
+         */
+        aboutItem.addActionListener(e -> openGitHubLink());
+        aboutMenu.add(aboutItem);
+
+
+        changeObjectNameItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                canvas.changeObjectName();
+            }
+        });
+        editMenu.add(changeObjectNameItem);
+
+        groupObjectsItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                canvas.groupSelectedObjects();
+            }
+        });
+        editMenu.add(groupObjectsItem);
+
+        unGroupObjectsItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                canvas.ungroupSelectedObjects();
+            }
+        });
+        editMenu.add(unGroupObjectsItem);
+
+        myMenuBar.add(fileMenu);
+        myMenuBar.add(editMenu);
+        myMenuBar.add(aboutMenu);
+    }
+
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static MenuBar getInstance() {
+        if (instance == null) {
+            instance = new MenuBar();
+        }
+
+        return instance;
+    }
+
+    /**
+     * Gets menu bar.
+     *
+     * @return the menu bar
+     */
+    public JMenuBar getMenuBar() {
+        return myMenuBar;
+    }
+
+    private void openGitHubLink() {
+        String url = "https://github.com/xxrjun";
+        logger.info("Open GitHub link: {}", url);
+        try {
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+        } catch (java.io.IOException e) {
+            logger.error("Failed to open GitHub link: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Sets edit function enable.
+     *
+     * @param functionType the function type
+     * @param enable       the enable
+     */
+    public static void setEditFunctionEnable(EditFunctionTypes functionType, boolean enable) {
+        switch (functionType) {
+            case CHANGE_OBJECT_NAME:
+                changeObjectNameItem.setEnabled(enable);
+                break;
+            case GROUP_OBJECTS:
+                groupObjectsItem.setEnabled(enable);
+                break;
+            case UNGROUP_OBJECTS:
+                unGroupObjectsItem.setEnabled(enable);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid function type: " + functionType);
+        }
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/ToolPanel.java
+------------------------
+package com.xxrjun.components;
+
+import com.xxrjun.modes.UMLMode;
+import com.xxrjun.enums.ToolButtonConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.net.URL;
+import java.util.ArrayList;
+
+/**
+ * The type Tool panel.
+ */
+public class ToolPanel {
+    private static ToolPanel instance = null;
+
+    private final JPanel panel;
+    private final ArrayList<JButton> toolButtons;
+    private final Logger logger = LoggerFactory.getLogger(ToolPanel.class);
+
+    /**
+     * The constant TOOL_PANEL_WIDTH.
+     */
+    protected static final int TOOL_PANEL_WIDTH = 200;
+    /**
+     * The constant TOOL_PANEL_HEIGHT.
+     */
+    protected static final int TOOL_PANEL_HEIGHT = 768;
+    /**
+     * The constant TOOL_PANEL_PADDING.
+     */
+    protected static final int TOOL_PANEL_PADDING = 10;
+    /**
+     * The constant TOOL_BUTTON_VERTICAL_PADDING.
+     */
+    protected static final int TOOL_BUTTON_VERTICAL_PADDING = 10;
+
+    private ToolPanel() {
+        toolButtons = new ArrayList<>();
+
+        // Load buttons to buttons list
+        loadButtons();
+
+        // Create a panel with GridLayout and add buttons to it
+        panel = new JPanel(new GridLayout(toolButtons.size(), 1, 0, TOOL_BUTTON_VERTICAL_PADDING));
+
+        initializePanel();
+        for (JButton button : toolButtons) {
+            panel.add(button);
+        }
+    }
+
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static ToolPanel getInstance() {
+        if (instance == null) {
+            instance = new ToolPanel();
+        }
+        return instance;
+    }
+
+    /**
+     * Initialize panel.
+     */
+    public void initializePanel() {
+        panel.setBounds(0, 0, TOOL_PANEL_WIDTH, TOOL_PANEL_HEIGHT);
+        panel.setBorder(BorderFactory.createEmptyBorder(TOOL_PANEL_PADDING, TOOL_PANEL_PADDING, TOOL_PANEL_PADDING, TOOL_PANEL_PADDING));
+        panel.setBackground(Color.GRAY);
+
+        logger.info("Tool panel initialized: width={}, height={}", TOOL_PANEL_WIDTH, TOOL_PANEL_HEIGHT);
+    }
+
+    /**
+     * Load buttons.
+     */
+    public void loadButtons() {
+        for (ToolButtonConfig config : ToolButtonConfig.values()) {
+            URL imageUrl = getClass().getResource("/images/" + config.getImageName());
+            if (imageUrl != null) {
+                ToolButton toolButton = new ToolButton(config.getActionType(), config.getToolName(), imageUrl);
+                toolButtons.add(toolButton.button);
+            } else {
+                logger.error("Image resource not found: {}", config.getImageName());
+            }
+        }
+
+        logger.info("Tool buttons loaded: {}", toolButtons.size());
+    }
+
+    /**
+     * Reset panel buttons.
+     *
+     * @param toolIndex the tool index
+     */
+    public void resetPanelButtons(int toolIndex) {
+        for (JButton button : toolButtons) {
+            button.setBackground(Color.WHITE);
+        }
+        toolButtons.get(toolIndex).setBackground(new Color(225, 151, 25));
+    }
+
+    /**
+     * Gets total panel height.
+     *
+     * @return the total panel height
+     */
+    public int getTotalPanelHeight() {
+        return TOOL_PANEL_HEIGHT + toolButtons.size() * TOOL_BUTTON_VERTICAL_PADDING;
+    }
+
+    /**
+     * Gets tool panel width.
+     *
+     * @return the tool panel width
+     */
+    public int getToolPanelWidth() {
+        return TOOL_PANEL_WIDTH + 2 * TOOL_PANEL_PADDING;
+    }
+
+    /**
+     * Gets panel.
+     *
+     * @return the panel
+     */
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    private class ToolButton {
+        // ref: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#jbutton
+        private final JButton button;
+
+        /**
+         * Instantiates a new Tool button.
+         *
+         * @param action   the action
+         * @param toolName the tool name
+         * @param imageUrl the image url
+         */
+        public ToolButton(UMLMode action, String toolName, URL imageUrl) {
+            ImageIcon icon = new ImageIcon(imageUrl);
+            this.button = new JButton(icon);
+            this.button.setToolTipText(toolName);
+            this.button.setFocusable(false);
+            this.button.setBackground(Color.WHITE);
+            this.button.setBorderPainted(false);
+            button.setOpaque(true);
+            button.setContentAreaFilled(true);
+            this.button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent evt) {
+                    ToolPanel.getInstance().resetPanelButtons(toolButtons.indexOf(button));
+                    Canvas.getInstance().setCanvasCurrentAction(action);
+                    Canvas.getInstance().resetSelection();
+                    Canvas.getInstance().repaint();
+                }
+            });
+        }
+    }
+}
+------------------------
+
+File: ./src/main/java/com/xxrjun/components/Canvas.java
+------------------------
+package com.xxrjun.components;
+
+import com.xxrjun.components.uml.UMLGroup;
+import com.xxrjun.components.uml.basics.UMLBasicObject;
+import com.xxrjun.components.uml.connectionlines.UMLConnectionLine;
+import com.xxrjun.enums.EditFunctionTypes;
+import com.xxrjun.modes.UMLMode;
+import com.xxrjun.components.uml.UMLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The type Canvas.
+ */
+public class Canvas extends JPanel {
+
+    private static Canvas instance = null;
+    private final ArrayList<UMLObject> umlObjects;
+    private final ArrayList<UMLObject> selectedObjects;
+    private UMLObject selection = null;
+    private Rectangle selectedArea = null;
+    private UMLMode currentMode;
+    private UMLConnectionLine tmpConnectionLine = null;
+
+    private Logger logger = LoggerFactory.getLogger(Canvas.class);
+
+    private Canvas() {
+        umlObjects = new ArrayList<>();
+        selectedObjects = new ArrayList<>();
+        selectedArea = new Rectangle();
+    }
+
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
+    public static Canvas getInstance() {
+        if (instance == null) {
+            instance = new Canvas();
+        }
+        return instance;
+    }
+
+    /**
+     * Sets canvas current action.
+     *
+     * @param action the action
+     */
+    public void setCanvasCurrentAction(UMLMode action) {
+        if (currentMode != null) {
+            // ref: https://docs.oracle.com/javase/tutorial/uiswing/events/mouselistener.html
+            this.removeMouseListener(currentMode);
+            this.removeMouseMotionListener(currentMode);
+        }
+        this.currentMode = action;
+        this.addMouseListener(currentMode);
+        this.addMouseMotionListener(currentMode);
+    }
+
+    /**
+     * Add uml object.
+     *
+     * @param umlObject the uml object
+     */
+    public void addUMLObject(UMLObject umlObject) {
+        umlObjects.add(umlObject);
+    }
+
+    /**
+     * Remove uml object.
+     *
+     * @param umlObject the uml object
+     */
+    public void removeUMLObject(UMLObject umlObject) {
+        umlObjects.remove(umlObject);
+    }
+
+    /**
+     * Clear selected objects.
+     */
+    public void clearSelectedObjects() {
+        selectedObjects.clear();
+    }
+
+    /**
+     * Gets uml objects.
+     *
+     * @return the uml objects
+     */
+    public List<UMLObject> getUMLObjects() {
+        return new ArrayList<>(umlObjects);
+    }
+
+    /**
+     * Sets selected objects.
+     *
+     * @param selectedObjects the selected objects
+     */
+    public void setSelectedObjects(List<UMLObject> selectedObjects) {
+        this.selectedObjects.clear();
+        this.selectedObjects.addAll(selectedObjects);
+    }
+
+    /**
+     * Add selected object.
+     *
+     * @param umlObject the uml object
+     */
+    public void addSelectedObject(UMLObject umlObject) {
+        selectedObjects.add(umlObject);
+    }
+
+    /**
+     * Remove selected object.
+     *
+     * @param umlObject the uml object
+     */
+    public void removeSelectedObject(UMLObject umlObject) {
+        selectedObjects.remove(umlObject);
+    }
+
+    /**
+     * Gets selected objects.
+     *
+     * @return the selected objects
+     */
+    public List<UMLObject> getSelectedObjects() {
+        return selectedObjects;
+    }
+
+    /**
+     * Sets selection.
+     *
+     * @param selection the selection
+     */
+    public void setSelection(UMLObject selection) {
+        this.selection = selection;
+    }
+
+    /*
+        Temporary connection line
+     */
+
+    /**
+     * Sets tmp connection line.
+     *
+     * @param tmpConnectionLine the tmp connection line
+     */
+    public void setTmpConnectionLine(UMLConnectionLine tmpConnectionLine) {
+        this.tmpConnectionLine = tmpConnectionLine;
+    }
+
+    /**
+     * Clear tmp connection line.
+     */
+    public void clearTmpConnectionLine() {
+        this.tmpConnectionLine = null;
+    }
+
+    /**
+     * Sets selected area.
+     *
+     * @param selectedArea the selected area
+     */
+/*
+        Selected Area
+     */
+    public void setSelectedArea(Rectangle selectedArea) {
+        this.selectedArea = selectedArea;
+    }
+
+    /**
+     * Gets selected area.
+     *
+     * @return the selected area
+     */
+    public Rectangle getSelectedArea() {
+        return selectedArea;
+    }
+
+    /**
+     * Clear selected area.
+     */
+    public void clearSelectedArea() {
+        selectedArea.setBounds(0, 0, 0, 0);
+    }
+
+    /**
+     * Reset selection.
+     */
+    public void resetSelection() {
+        if (selection instanceof UMLGroup umlGroup) {
+            umlGroup.resetSelection();
+            selection = null;
+        } else if (selection != null) {
+            // Handle the selection reset for other UMLObject types if needed
+            selection = null;
+        }
+        clearSelectedArea();
+        clearSelectedObjects();
+    }
+
+    /**
+     * Gets selection.
+     *
+     * @return the selection
+     */
+    public UMLObject getSelection() {
+        return selection;
+    }
+
+    /*
+        Menu Function
+     */
+
+    /**
+     * Sets edit function enable.
+     */
+    public void setEditFunctionEnable() {
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.CHANGE_OBJECT_NAME, selection != null && selection.isNameChangeable());
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.GROUP_OBJECTS, selectedObjects.size() > 1);
+        MenuBar.setEditFunctionEnable(EditFunctionTypes.UNGROUP_OBJECTS, selectedObjects.size() == 1 && selection instanceof UMLGroup);
+    }
+
+    /**
+     * Change object name.
+     */
+    public void changeObjectName() {
+        if (MenuBar.changeObjectNameItem.isEnabled()) {
+            // Show dialog to change object name
+            String name = JOptionPane.showInputDialog("Please enter new object name: ");
+            if (name != null && !name.isEmpty()) {
+                logger.info("Change object name to: {}", name);
+                if (this.getSelection() instanceof UMLBasicObject umlObject) {
+                    umlObject.setObjectName(name);
+                    this.repaint();
+                    logger.info("Object name changed to: {}", umlObject.getObjectName());
+                }
+            } else {
+                logger.warn("Invalid object name: {}", name);
+            }
+        } else {
+            logger.warn("Change object name is disabled");
+        }
+
+    }
+
+    /*
+        Group
+     */
+
+    /**
+     * Group selected objects.
+     */
+    public void groupSelectedObjects() {
+        if (selectedObjects.size() > 1) { // Group should have at least 2 UMLObjects
+            UMLGroup umlGroup = new UMLGroup();
+            for (UMLObject umlObject : selectedObjects) {
+                umlGroup.addGroupMember(umlObject);
+                umlObjects.remove(umlObject); // Remove the selected objects from the canvas, as they are now part of the group
+            }
+            umlGroup.setGroupBounds();
+            umlObjects.add(umlGroup);
+            selectedObjects.clear();
+            selection = umlGroup;
+        }
+        this.repaint();
+        setEditFunctionEnable();
+    }
+
+    /**
+     * Ungroup selected objects.
+     */
+    public void ungroupSelectedObjects() {
+        if (selectedObjects.size() == 1 && selection instanceof UMLGroup umlGroup) {
+            List<UMLObject> groupMembers = umlGroup.getGroupMembers();
+            umlObjects.addAll(groupMembers);
+            umlObjects.remove(umlGroup);
+            selectedObjects.clear();
+            selection = null;
+        }
+        this.repaint();
+        setEditFunctionEnable();
+    }
+
+    /*
+        Paint
+     */
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        // Set menu enable
+        setEditFunctionEnable();
+
+        // Set paint color
+        g.setColor(Color.BLACK);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
+
+        // Draw the UML objects
+        for (int i = umlObjects.size() - 1; i >= 0; i--) {
+            UMLObject umlObject = umlObjects.get(i);
+            umlObject.draw(g);
+
+            // Reset the group selection
+            umlObject.setGroupSelected(false);
+
+            // Check group selection and highlight
+            if (!selectedArea.isEmpty() && selectedArea.contains(umlObject.getBounds())) {
+                umlObject.highlightSelection(g);
+                umlObject.setGroupSelected(true);
+            }
+        }
+
+        // Draw the selected objects
+        // Performance issue
+        if (this.selection != null) {
+            this.selection.highlightSelection(g);
+        }
+
+        // Draw temporary connection line
+        if (tmpConnectionLine != null) {
+            tmpConnectionLine.draw(g);
+        }
+
+        // Draw the selected area
+        if (!selectedArea.isEmpty()) {
+            g.setColor(new Color(41, 86, 212, 80));
+            g.fillRect(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+            g.setColor(new Color(8, 37, 57));
+            g.drawRect(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+        }
+    }
+
+}
+------------------------
+

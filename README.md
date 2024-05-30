@@ -26,22 +26,31 @@
 
 # UML Editor
 
-- [Software Requirements](#software-requirements)
-  - [Maven Dependencies](#maven-dependencies)
-- [Features](#features)
-  - [GUI Layout and Buttons](#gui-layout-and-buttons)
-  - [Functions](#functions)
-  - [Extra Features](#extra-features)
-- [Program Flow Overview](#program-flow-overview)
-- [Usage](#usage)
-  - [Build](#build)
-  - [Run](#run)
-- [Class Diagram](#class-diagram)
-- [Future Work](#future-work)
-- [Project File Structure](#project-file-structure)
-- [References](#references)
-  - [Documentations](#documentations)
-  - [Related Projects](#related-projects)
+- [UML Editor](#uml-editor)
+  - [Software Requirements](#software-requirements)
+    - [Maven Dependencies](#maven-dependencies)
+  - [Features](#features)
+    - [GUI Layout and Buttons](#gui-layout-and-buttons)
+    - [Functions](#functions)
+    - [Extra Features](#extra-features)
+  - [Usage](#usage)
+    - [Build](#build)
+    - [Run](#run)
+  - [Class Diagram](#class-diagram)
+  - [Future Work](#future-work)
+  - [Project File Structure](#project-file-structure)
+  - [Program Flow Overview](#program-flow-overview)
+  - [Use Case Sequence Diagram](#use-case-sequence-diagram)
+    - [A. Creating a UML Object](#a-creating-a-uml-object)
+    - [B. Creating a UML Connection Line](#b-creating-a-uml-connection-line)
+    - [C. Select/Unselect a Single Object](#c-selectunselect-a-single-object)
+    - [D.1 Group Objects](#d1-group-objects)
+    - [D.2 Ungroup Objects](#d2-ungroup-objects)
+    - [E. Move Objects](#e-move-objects)
+    - [F. Change Object Name](#f-change-object-name)
+  - [References](#references)
+    - [Documentations](#documentations)
+    - [Related Projects](#related-projects)
 
 ## Software Requirements
 
@@ -85,60 +94,7 @@
 
 - [ ] Delete UMLObject
 
-## Program Flow Overview
 
-> [!CAUTION]
-> This part will be updated soon.
-
-1. Click Tool Button
-2. Mode
-   1. Create UMLObject
-      1. Create UMLConnectionLine
-      2. Create UMLBasicObject
-   2. Select
-      1. If selection is UMLObjects
-         1. can Move (UMLConnectionLine movement are not supported yet.)
-      2. If selection is UMLBasicObject
-         1. can change it’s ObjectName
-      3. If selection is an Area including several UMLObjects
-         1. can Group
-      4. If selection is an UMLGroup
-         1. can UnGroup
-3. Canvas Repaint
-
-```mermaid
-graph TD
-    A[Initialize UML Editor] --> B{Button Clicked}
-    B -->|Select| C[Set Select Mode]
-    B -->|Association| D[Set Association Mode]
-    B -->|Generalization| E[Set Generalization Mode]
-    B -->|Composition| F[Set Composition Mode]
-    B -->|Class| G[Set Class Creation Mode]
-    B -->|Use Case| H[Set Use Case Creation Mode]
-    C --> I{Mouse Event on Canvas}
-    D --> I
-    E --> I
-    F --> I
-    G --> I
-    H --> I
-    I -->|Left Click on Object| J[Select/Unselect Object]
-    I -->|Left Click on Canvas| K[Unselect All Objects]
-    I -->|Left Press on Object| L[Start Line Creation]
-    I -->|Mouse Drag| M[Update Line Endpoint]
-    I -->|Left Release on Object| N[Create Connection Line]
-    I -->|Left Press on Object| O[Start Object Movement]
-    I -->|Mouse Drag| P[Move Object]
-    I -->|Left Release| Q[Update Object Position]
-    J --> R{Edit Menu}
-    K --> R
-    R -->|Group Selected| S[Merge Selected Objects]
-    R -->|Ungroup Selected| T[Decompose Composite Object]
-    R -->|Change Object Name| U[Open Name Change Window]
-    U -->|OK with New Name| V[Update Object Name]
-    U -->|Cancel| W[Close Window]
-    V --> W
-    W --> I
-```
 
 ## Usage
 
@@ -227,6 +183,169 @@ Class Diagram with Dependency
 |   |   \---resources
 |   |       \---images
 ...
+```
+
+## Program Flow Overview
+
+1. Click Tool Button
+2. Mode
+   1. Create UMLObject
+      1. Create UMLConnectionLine
+      2. Create UMLBasicObject
+   2. Select
+      1. If selection is UMLObjects
+         1. can Move (UMLConnectionLine movement are not supported yet.)
+      2. If selection is UMLBasicObject
+         1. can change it’s ObjectName
+      3. If selection is an Area including several UMLObjects
+         1. can Group
+      4. If selection is an UMLGroup
+         1. can UnGroup
+3. Canvas Repaint
+
+```mermaid
+graph TD
+    A[Initialize UML Editor] --> B{Button Clicked}
+    B -->|Select| C[Set Select Mode]
+    B -->|Association| D[Set Association Mode]
+    B -->|Generalization| E[Set Generalization Mode]
+    B -->|Composition| F[Set Composition Mode]
+    B -->|Class| G[Set Class Creation Mode]
+    B -->|Use Case| H[Set Use Case Creation Mode]
+    C --> I{Mouse Event on Canvas}
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I -->|Left Click on Object| J[Select/Unselect Object]
+    I -->|Left Click on Canvas| K[Unselect All Objects]
+    I -->|Left Press on Object| L[Start Line Creation]
+    I -->|Mouse Drag| M[Update Line Endpoint]
+    I -->|Left Release on Object| N[Create Connection Line]
+    I -->|Left Press on Object| O[Start Object Movement]
+    I -->|Mouse Drag| P[Move Object]
+    I -->|Left Release| Q[Update Object Position]
+    J --> R{Edit Menu}
+    K --> R
+    R -->|Group Selected| S[Merge Selected Objects]
+    R -->|Ungroup Selected| T[Decompose Composite Object]
+    R -->|Change Object Name| U[Open Name Change Window]
+    U -->|OK with New Name| V[Update Object Name]
+    U -->|Cancel| W[Close Window]
+    V --> W
+    W --> I
+```
+
+## Use Case Sequence Diagram
+
+### A. Creating a UML Object
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Button
+    participant Canvas
+    User->>Button: Click button
+    Button-->>User: Change button color to black
+    User->>Canvas: Move cursor to (x,y) and press left mouse button 
+    Canvas-->>Canvas: Draw a blank object at (x,y)
+    User->>Canvas: Repeat creating same object
+    alt User press another button
+        User->>Button: Click another button  
+        Button-->>User: Change to the mode of clicked button
+    end
+```
+
+### B. Creating a UML Connection Line
+
+```mermaid
+sequenceDiagram
+    participant User 
+    participant Object1
+    participant Object2
+    participant Canvas
+    User->>Object1: Press left mouse button within boundary
+    User->>Canvas: Drag mouse
+    User->>Object2: Release mouse button within boundary
+    Canvas-->>Canvas: Create connection line between Object1 and Object2
+    Canvas-->>Canvas: Draw arrow at Object2 based on line type
+    alt Press point not on object
+        User->>Canvas: Press, drag and release not on any object
+        Canvas-->>Canvas: Do nothing
+    else Release point not on object
+        User->>Canvas: Release mouse not on any object
+        Canvas-->>Canvas: Do not create connection line  
+    end
+```
+
+### C. Select/Unselect a Single Object
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Object
+    participant Canvas 
+    User->>Object: Click on object
+    Object-->>Canvas: Deselect any other selected objects 
+    Object-->>Object: Display 4 connection ports
+    alt Click on empty area
+        User->>Canvas: Click on coordinates without object
+        Canvas-->>Canvas: Deselect any selected objects
+    end
+```
+
+### D.1 Group Objects
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant EditMenu
+    participant SelectedObjects
+    User->>EditMenu: Select "Group" option
+    EditMenu->>SelectedObjects: Merge into one composite object
+```
+
+### D.2 Ungroup Objects
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant EditMenu
+    participant CompositeObject
+    User->>EditMenu: Select "Ungroup" option
+    EditMenu->>CompositeObject: Decompose one layer
+```
+
+
+### E. Move Objects
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Object
+    participant Canvas
+    User->>Object: Press left mouse button 
+    User->>Canvas: Drag mouse to (x,y)
+    User->>Canvas: Release mouse button
+    Canvas->>Object: Move object to (x,y)
+    Canvas-->>Canvas: Redraw connected lines
+```
+
+### F. Change Object Name
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant EditMenu
+    participant Object
+    participant NameWindow
+    User->>Object: Select object
+    User->>EditMenu: Select "Change Object Name"
+    EditMenu-->>NameWindow: Open window with text area and OK/Cancel 
+    User->>NameWindow: Enter new name, press OK
+    NameWindow-->>Object: Change object name
+    NameWindow-->>NameWindow: Close window
 ```
 
 ## References
