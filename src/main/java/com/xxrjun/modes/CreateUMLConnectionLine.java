@@ -39,6 +39,7 @@ public class CreateUMLConnectionLine extends UMLMode {
         allUMLObjects = canvas.getUMLObjects();
         for (UMLObject umlObject : allUMLObjects) {
             // Check if the mouse click is inside the object
+            // I think using instanceof here is good enough
             if (umlObject instanceof UMLBasicObject umlBasicObject && (umlBasicObject.contains(e.getPoint()))) {
                 sourceObject = umlBasicObject;
                 sourcNearestUMLPort = umlBasicObject.findNearestPort(e.getPoint());
@@ -71,8 +72,8 @@ public class CreateUMLConnectionLine extends UMLMode {
             newConnectionLine.setSourcePort(sourcNearestUMLPort);
             newConnectionLine.setDestinationPort(destinationNearestUMLPort);
 
-            sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.SOURCE);
-            destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.DESTINATION);
+            sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointTypes.SOURCE);
+            destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointTypes.DESTINATION);
         }
 
         // clear temporary connection line and repaint
