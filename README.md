@@ -355,8 +355,8 @@ sequenceDiagram
 
 ### Related Projects
 
-> [!CAUTION]
-> Code similarity will be checked and updated. Expecting to use [MOSS](https://theory.stanford.edu/~aiken/moss/)
+> [!TIP]
+> Code similarity is checked by using [MOSS](https://theory.stanford.edu/~aiken/moss/). Result: http://moss.stanford.edu/results/1/9411843636512/
 
 - [haVincy/UML-Editor](https://github.com/haVincy/UML-Editor)
 - [MU-PING/UML-editor](https://github.com/MU-PING/UML-editor)
