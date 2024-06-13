@@ -71,8 +71,8 @@ public class CreateUMLConnectionLine extends UMLMode {
             newConnectionLine.setSourcePort(sourcNearestUMLPort);
             newConnectionLine.setDestinationPort(destinationNearestUMLPort);
 
-            sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.SOURCE);
-            destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointType.DESTINATION);
+            sourceObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointTypes.SOURCE);
+            destinationObject.addConnectionLine(newConnectionLine, UMLConnectionLine.EndPointTypes.DESTINATION);
         }
 
         // clear temporary connection line and repaint

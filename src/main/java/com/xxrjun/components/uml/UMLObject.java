@@ -13,7 +13,6 @@ public abstract class UMLObject{
     /**
      * The Uml ports.
      */
-    protected UMLPort[] umlPorts;
     private boolean isGroupSelected = false;
     private boolean isNameChangeable = false;
 

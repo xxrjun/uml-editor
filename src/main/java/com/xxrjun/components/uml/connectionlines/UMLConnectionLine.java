@@ -17,7 +17,7 @@ public abstract class UMLConnectionLine extends UMLObject {
     /**
      * The enum End point type.
      */
-    public enum EndPointType {
+    public enum EndPointTypes {
         /**
          * Source end point type.
          */
@@ -32,7 +32,7 @@ public abstract class UMLConnectionLine extends UMLObject {
         NONE
     }
 
-    private EndPointType currentEndPointType = EndPointType.NONE;
+    private EndPointTypes currentEndPointType = EndPointTypes.NONE;
 
     /**
      * Instantiates a new Uml connection line.
@@ -81,10 +81,10 @@ public abstract class UMLConnectionLine extends UMLObject {
      * @param p the p
      */
     public void resetEndPoint(Point p) {
-        if (currentEndPointType == EndPointType.SOURCE) {
+        if (currentEndPointType == EndPointTypes.SOURCE) {
             this.setX1(p.x);
             this.setY1(p.y);
-        } else if (currentEndPointType == EndPointType.DESTINATION) {
+        } else if (currentEndPointType == EndPointTypes.DESTINATION) {
             this.setX2(p.x);
             this.setY2(p.y);
         }
@@ -113,7 +113,7 @@ public abstract class UMLConnectionLine extends UMLObject {
      *
      * @return the current end point type
      */
-    public EndPointType getCurrentEndPointType() {
+    public EndPointTypes getCurrentEndPointType() {
         return currentEndPointType;
     }
 
@@ -122,7 +122,7 @@ public abstract class UMLConnectionLine extends UMLObject {
      *
      * @param endPointType the end point type
      */
-    public void setEndPointType(EndPointType endPointType) {
+    public void setEndPointType(EndPointTypes endPointType) {
         currentEndPointType = endPointType;
     }
 

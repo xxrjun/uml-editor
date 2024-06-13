@@ -38,7 +38,7 @@ public abstract class UMLBasicObject extends UMLObject {
          */
         RIGHT}
 
-    private final Map<UMLConnectionLine, UMLConnectionLine.EndPointType> connectionLines = new HashMap<>();
+    private final Map<UMLConnectionLine, UMLConnectionLine.EndPointTypes> connectionLines = new HashMap<>();
 
     /**
      * Instantiates a new Uml basic object.
@@ -102,17 +102,17 @@ public abstract class UMLBasicObject extends UMLObject {
      * Update connection line.
      */
     public void updateConnectionLine() {
-        for (Map.Entry<UMLConnectionLine, UMLConnectionLine.EndPointType> entry : connectionLines.entrySet()) {
+        for (Map.Entry<UMLConnectionLine, UMLConnectionLine.EndPointTypes> entry : connectionLines.entrySet()) {
             // if source => calculate source Nearest port => set source port
             // if destination => calculate destination Nearest port => set destination port
             UMLConnectionLine connectionLine = entry.getKey();
-            UMLConnectionLine.EndPointType endPointType = entry.getValue();
+            UMLConnectionLine.EndPointTypes endPointType = entry.getValue();
 
 
             // TODO: BUG: UMLBasicObject and UMLConnectionLine overlapping still exists after updating to nearest port
-            if (endPointType == UMLConnectionLine.EndPointType.SOURCE) {
+            if (endPointType == UMLConnectionLine.EndPointTypes.SOURCE) {
                 connectionLine.setSourcePort(findNearestPort(new Point(connectionLine.getX1(), connectionLine.getY1())));
-            } else if (endPointType == UMLConnectionLine.EndPointType.DESTINATION) {
+            } else if (endPointType == UMLConnectionLine.EndPointTypes.DESTINATION) {
                 connectionLine.setDestinationPort(findNearestPort(new Point(connectionLine.getX2(), connectionLine.getY2())));
             }
             // reset the location of the connection line
@@ -136,7 +136,7 @@ public abstract class UMLBasicObject extends UMLObject {
      * @param connectionLine the connection line
      * @param endPointType   the end point type
      */
-    public void addConnectionLine(UMLConnectionLine connectionLine, UMLConnectionLine.EndPointType endPointType) {
+    public void addConnectionLine(UMLConnectionLine connectionLine, UMLConnectionLine.EndPointTypes endPointType) {
         connectionLines.put(connectionLine, endPointType);
     }
 
