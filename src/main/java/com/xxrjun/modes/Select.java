@@ -52,17 +52,10 @@ public class Select extends UMLMode {
         int moveY = e.getY() - startPoint.y;
 
         if (canvas.getSelection() != null) {
-            if (canvas.getSelection() instanceof UMLBasicObject umlBasicObject) {
-                // UMLObject selected
-                umlBasicObject.updateLocation(moveX, moveY);
-                startPoint.x = e.getX();
-                startPoint.y = e.getY();
-            } else if (canvas.getSelection() instanceof UMLGroup umlGroup) {
-                // UMLGroup selected
-                umlGroup.updateLocation(moveX, moveY);
-                startPoint.x = e.getX();
-                startPoint.y = e.getY();
-            }
+            UMLObject selectedObject = canvas.getSelection();
+            selectedObject.updateLocation(moveX, moveY);
+            startPoint.x = e.getX();
+            startPoint.y = e.getY();
         } else {
             // Update selected area
             int upperLeftX = Math.min(startPoint.x, e.getX());
